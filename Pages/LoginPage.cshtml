@@ -1,0 +1,30 @@
+﻿@page
+@model MyGymProject.Client.Pages.LoginPageModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="container col-4 mt-5">
+    <form method="post">
+        <h2> Войти в личный кабинет</h2>
+        <div class="mt-4 mb-4">
+            <label asp-for="Login" class="form-label"></label>
+            <input asp-for="Login" type="email" class="form-control"  />
+            <span asp-validation-for="Login" class="text-danger"></span>
+        </div>
+        <div class="mb-4">
+            <label asp-for="Password" class="form-label"></label>
+            <input asp-for="Password" type="password" class="form-control" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+        @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+        {
+            <div class="alert alert-danger">@Model.ErrorMessage</div>
+        }
+        <div class="container">
+            <button type="submit" class="btn btn-primary">Войти</button>
+        </div>
+        <br />
+        <p>Если у вас еще нет пароля для входа, вам нужно <a href="/Registration" class="link-info">зарегистрироваться здесь</a></p>
+    </form>
+</div>

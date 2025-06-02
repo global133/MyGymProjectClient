@@ -1,0 +1,8 @@
+﻿@page
+@model MyGymProject.Client.Pages.ClientMainModel
+@{
+    ViewData["Title"] = "Личный кабинет";
+}
+
+<h2>Добро пожаловать, @Model.client?.FullName</h2>
+<p>Email: @Model.client.Login</p>
