@@ -27,7 +27,7 @@ body {
 }
 
 .carousel-item img {
-    object-fit: cover; /* Заполнить, обрезая */
+    object-fit: cover; 
     height: 100%;
     width: 100%;
 }
@@ -37,3 +37,13 @@ body {
     justify-content: center;
     gap: 1rem;
 }
+
+
+.sidebar-menu .nav-link {
+    color: white;
+}
+
+.sidebar-menu .nav-link:hover {
+    color: darkmagenta;
+}
+

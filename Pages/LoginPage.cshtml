@@ -4,12 +4,12 @@
     ViewData["Title"] = "Login";
 }
 
-<div class="container col-4 mt-5">
+<div class="container col-3 mt-5">
     <form method="post">
         <h2> Войти в личный кабинет</h2>
         <div class="mt-4 mb-4">
             <label asp-for="Login" class="form-label"></label>
-            <input asp-for="Login" type="email" class="form-control"  />
+            <input asp-for="Login" type="text" class="form-control"  />
             <span asp-validation-for="Login" class="text-danger"></span>
         </div>
         <div class="mb-4">

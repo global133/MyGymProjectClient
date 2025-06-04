@@ -1,3 +1,4 @@
+using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
@@ -7,13 +8,10 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MyGymProject.Client.Pages
 {
-    public class LoginPageModel : PageModel
+    public class LoginPageModel : AuthorizedPageModel
     {
-        private readonly HttpClient _httpClient;
-
         [BindProperty]
         [Required(ErrorMessage = "Введите логин")]
-        [EmailAddress(ErrorMessage = "Некорректный email")]
         public string Login { get; set; }
 
         [BindProperty]
@@ -21,13 +19,15 @@ namespace MyGymProject.Client.Pages
         public string Password { get; set; }
         public string ErrorMessage { get; set; }
 
-        public LoginPageModel(HttpClient httpClient)
+        public LoginPageModel(HttpClient httpClient) : base(httpClient) { }
+      
+        public async Task<IActionResult> OnGetAsync()
         {
-            this._httpClient = httpClient;
-        }
+            var client = await LoadClientAsync();
+            if (client == null)
+                return Page();
 
-        public void OnGet()
-        {
+            return RedirectToPage("/ClientMain");
         }
 
         public async Task<IActionResult> OnPostAsync()
