@@ -1,0 +1,60 @@
+﻿
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using MyGymProject.Server.DTOs.Client;
+using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http.Headers;
+using System.Security.Claims;
+
+namespace MyGymProject.Client
+{
+    public class AuthorizedPageModel : PageModel
+    {
+        protected readonly HttpClient _httpClient;
+
+        protected AuthorizedPageModel(HttpClient httpClient)
+        {
+            _httpClient = httpClient;
+        }
+
+        protected async Task<ClientReadDto?> LoadClientAsync()
+        {
+            var token = Request.Cookies["jwt"];
+            if (string.IsNullOrEmpty(token)) return null;
+
+            var login = GetLoginFromToken(token);
+            if (string.IsNullOrEmpty(login)) return null;
+
+            var id = GetClientIdFromToken(token);
+
+            var request = new HttpRequestMessage(HttpMethod.Get, $"http://localhost:5155/api/Clients/bylogin/{login}");
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await _httpClient.SendAsync(request);
+            if (!response.IsSuccessStatusCode) return null;
+
+            return await response.Content.ReadFromJsonAsync<ClientReadDto>();
+        }
+
+        private string GetLoginFromToken(string token)
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var jwt = handler.ReadJwtToken(token);
+            return jwt.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value ?? string.Empty;
+        }
+        private int? GetClientIdFromToken(string token)
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var jwt = handler.ReadJwtToken(token);
+
+            var idClaim = jwt.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            if (int.TryParse(idClaim, out int clientId))
+            {
+                return clientId;
+            }
+
+            return null; 
+        }
+
+    }
+}

@@ -1,10 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.IdentityModel.Tokens.Jwt;
-using System.Net.Http.Headers;
-using System.Security.Claims;
-using MyGymProject.Server.DTOs;
-using Application.DTOs.Client;
+using MyGymProject.Server.DTOs.Client;
 
 namespace MyGymProject.Client.Pages
 {

@@ -1,8 +1,9 @@
-using Application.DTOs.Client;
-using Domain.Models;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using MyGymProject.Server.DTOs.Client;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json;
 
 namespace MyGymProject.Client.Pages
 {
@@ -69,6 +70,9 @@ namespace MyGymProject.Client.Pages
 
             try
             {
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
                 var response = await _httpClient.PostAsJsonAsync("http://localhost:5155/api/Auth/register", clientCreateDto);
 
                 if (response.IsSuccessStatusCode)
@@ -77,7 +81,24 @@ namespace MyGymProject.Client.Pages
                 }
                 else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
                 {
-                    ErrorMessage = "Ошибка при регистрации: такой пользователь уже существует";
+                    var content = await response.Content.ReadAsStringAsync();
+
+                    // Попробуем десериализовать структуру с ошибками валидации
+                    var problemDetails = JsonSerializer.Deserialize<ValidationProblemDetails>(content, new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
+
+                    if (problemDetails?.Errors != null && problemDetails.Errors.Any())
+                    {
+                        // Собираем все сообщения ошибок в одну строку
+                        ErrorMessage = string.Join(" ", problemDetails.Errors.SelectMany(e => e.Value));
+                    }
+                    else
+                    {
+                        ErrorMessage = "Ошибка при регистрации: логин уже существует или введены некорректные данные";
+                    }
+
                     return Page();
                 }
                 else

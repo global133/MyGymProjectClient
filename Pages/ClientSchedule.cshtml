@@ -1,0 +1,75 @@
+﻿@page
+@model MyGymProject.Client.Pages.ClientScheduleModel
+@{
+}
+
+
+<div class="container-fluid p-0">
+    <div class="row">
+        <div class="col-2 bg-dark vh-100">
+            <h5>Меню</h5>
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link text-light" asp-page="/ClientMain">Личный кабинет</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light" asp-page="/ClientSchedule">Мои тренировки</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light" href="/Schedule">Расписание</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-danger" href="/Logout">Выход</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-10 p-4">
+            <h1 class="display-3 mt-4 mb-4">Мои тренировки</h1>
+
+            <form method="get" class="row g-3 mb-4">
+                <div class="col-auto">
+                    <label for="selectedDate" class="form-label">Фильтр по дате:</label>
+                    <input type="date" id="selectedDate" name="SelectedDate" class="form-control"
+                           value="@Model.SelectedDate?.ToString("yyyy-MM-dd")" />
+                </div>
+                <div class="col-auto align-self-end">
+                    <button type="submit" class="btn btn-primary">Показать</button>
+                    <a href="/ClientSchedule" class="btn btn-outline-secondary">Сбросить</a>
+                </div>
+            </form>
+
+            @if (Model.Trainings.Any())
+            {
+                <table class="table table-bordered table-striped">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Дата</th>
+                            <th>Время</th>
+                            <th>Тренер</th>
+                            <th>Зал</th>
+                            <th>Тип тренировки</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var training in Model.Trainings)
+                        {
+                            <tr>
+                                <td>@training.Time.ToString("dd.MM.yyyy")</td>
+                                <td>@training.Time.ToString("HH:mm")</td>
+                                <td>@training.TrainerName</td>
+                                <td>@training.HallName</td>
+                                <td>@(training.IsGroup ? "Групповая" : "Индивидуальная")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    Нет тренировок для отображения.
+                </div>
+            }
+        </div>
+    </div>
+</div>

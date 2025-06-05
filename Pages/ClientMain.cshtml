@@ -10,10 +10,10 @@
             <h5>Меню</h5>
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link text-light" href="/ClientMain">Личный кабинет</a>
+                    <a class="nav-link text-light" asp-page="/ClientMain">Личный кабинет</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-light" href="/Trainings">Мои тренировки</a>
+                    <a class="nav-link text-light" asp-page="/ClientSchedule">Мои тренировки</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-light" href="/Schedule">Расписание</a>
@@ -34,6 +34,7 @@
                 </div>
                 <div class="col-4 ms-5">
                     <h5> Личные данные</h5>
+                    <p>Id: @Model.client.Id</p>
                     <p>Имя: @Model.client.FullName</p>
                     <p>Дата рождения: @Model.client.DateOfBirth</p>
                     <p>Логин: @Model.client.Login</p>
