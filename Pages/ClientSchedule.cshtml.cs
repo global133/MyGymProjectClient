@@ -13,7 +13,7 @@ namespace MyGymProject.Client.Pages
 
         [BindProperty]
         public List<TrainingResponseDTO> Trainings { get; set; }
-        public ClientScheduleModel(HttpClient httpClient) : base(httpClient) { }
+        public ClientScheduleModel(IHttpClientFactory httpClientFactory, IHttpContextAccessor contextAccessor) : base(httpClientFactory, contextAccessor) { }
         public async Task<IActionResult> OnGetAsync()
         {
             var clientData = await LoadClientAsync();
@@ -26,10 +26,7 @@ namespace MyGymProject.Client.Pages
                 return RedirectToPage("/LoginPage");
 
 
-            var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost:5155/api/Trainings/my-schedule");
-            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-
-            var response = await _httpClient.SendAsync(request);
+            var response = await _httpClient.GetAsync("http://localhost:5155/api/Trainings/my-schedule");
             if (!response.IsSuccessStatusCode)
             {
                 throw new HttpRequestException($"Ошибка: {response.StatusCode}");

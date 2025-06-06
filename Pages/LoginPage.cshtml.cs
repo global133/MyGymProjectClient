@@ -18,7 +18,7 @@ namespace MyGymProject.Client.Pages
         public string Password { get; set; }
         public string ErrorMessage { get; set; }
 
-        public LoginPageModel(HttpClient httpClient) : base(httpClient) { }
+        public LoginPageModel(IHttpClientFactory httpClientFactory, IHttpContextAccessor contextAccessor) : base(httpClientFactory, contextAccessor) { }
       
         public async Task<IActionResult> OnGetAsync()
         {
@@ -73,8 +73,6 @@ namespace MyGymProject.Client.Pages
                 ErrorMessage = $"Ошибка: {ex.Message}";
                 return Page();
             }
-
-
         }
     }
 }
