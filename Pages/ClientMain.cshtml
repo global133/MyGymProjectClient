@@ -66,10 +66,6 @@
                             <a asp-page="/ClientMain" class="btn btn-secondary">Отмена</a>
 
                         </form>
-                        @if (!string.IsNullOrEmpty(Model.Message))
-                        {
-                            <div class="alert alert-success mt-3">@Model.Message</div>
-                        }
                     }
                     else
                     {
@@ -80,6 +76,10 @@
                         <p>Email: @Model.client.Email</p>
                         <p>Телефон: @Model.client.Phone</p>
                         <a asp-page="/ClientMain" asp-route-IsEditing="true" class="btn btn-primary">Редактировать</a>
+                        @if (!string.IsNullOrEmpty(Model.Message))
+                        {
+                            <div class="alert alert-success mt-3">@Model.Message</div>
+                        }
                     }  
                 </div>
             </div>

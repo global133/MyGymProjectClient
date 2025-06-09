@@ -33,7 +33,7 @@ namespace MyGymProject.Client
 
             var id = GetClientIdFromToken(token);
 
-            var response = await _httpClient.GetAsync($"http://localhost:5155/api/Clients/bylogin/{login}");
+            var response = await _httpClient.GetAsync($"http://localhost:5155/api/Clients/{id}");
             if (!response.IsSuccessStatusCode) return null;
 
             return await response.Content.ReadFromJsonAsync<ClientReadDto>();
