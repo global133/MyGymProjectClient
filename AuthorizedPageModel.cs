@@ -11,10 +11,17 @@ namespace MyGymProject.Client
     {
         protected readonly HttpClient _httpClient;
 
-        protected AuthorizedPageModel(HttpClient httpClient)
+        public AuthorizedPageModel(IHttpClientFactory httpClientFactory, IHttpContextAccessor contextAccessor)
         {
-            _httpClient = httpClient;
+            _httpClient = httpClientFactory.CreateClient();
+
+            var token = contextAccessor.HttpContext?.Request.Cookies["jwt"];
+            if (!string.IsNullOrEmpty(token))
+            {
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            }
         }
+
 
         protected async Task<ClientReadDto?> LoadClientAsync()
         {
@@ -26,10 +33,7 @@ namespace MyGymProject.Client
 
             var id = GetClientIdFromToken(token);
 
-            var request = new HttpRequestMessage(HttpMethod.Get, $"http://localhost:5155/api/Clients/bylogin/{login}");
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-            var response = await _httpClient.SendAsync(request);
+            var response = await _httpClient.GetAsync($"http://localhost:5155/api/Clients/{id}");
             if (!response.IsSuccessStatusCode) return null;
 
             return await response.Content.ReadFromJsonAsync<ClientReadDto>();

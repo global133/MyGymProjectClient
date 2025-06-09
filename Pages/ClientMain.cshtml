@@ -27,19 +27,60 @@
             <div class="col-8 mb-3 text-start">
                 <h1 class="display-6">Добро пожаловать, @Model.client?.FullName</h1>
             </div>
-
             <div class="row mt-5">
                 <div class="col-2">
                     <img src="./source/user.png" alt="No img" class="img-fluid" style="max-width: 20vh;" />
                 </div>
                 <div class="col-4 ms-5">
                     <h5> Личные данные</h5>
-                    <p>Id: @Model.client.Id</p>
-                    <p>Имя: @Model.client.FullName</p>
-                    <p>Дата рождения: @Model.client.DateOfBirth</p>
-                    <p>Логин: @Model.client.Login</p>
-                    <p>Email: @Model.client.Email</p>
-                    <p>Телефон: @Model.client.Phone</p>
+                    @if(Model.IsEditing)
+                    {
+                        <form method="post">
+                            <div class="mb-2">
+                                <label>Имя</label>
+                                <input asp-for="updatedClient.FullName" class="form-control" />
+                            </div>
+                            <div class="mb-2">
+                                <label>Дата рождения</label>
+                                <input asp-for="updatedClient.DateOfBirth" type="date" class="form-control" />
+                            </div>
+                            <div class="mb-2">
+                                <label>Логин</label>
+                                <input asp-for="updatedClient.Login" class="form-control" />
+                            </div>
+                            <label asp-for="updatedClient.Gender" class="form-label">Укажите пол</label>
+                            <select asp-for="updatedClient.Gender" class="form-select form-select-sm" aria-label=".form-select-sm example">
+                                <option value="">Выберите пол</option>
+                                <option value="1">Мужской</option>
+                                <option value="2">Женский</option>
+                            </select>
+                            <div class="mb-2">
+                                <label>Email</label>
+                                <input asp-for="updatedClient.Email" class="form-control" />
+                            </div>
+                            <div class="mb-2">
+                                <label>Телефон</label>
+                                <input asp-for="updatedClient.Phone" class="form-control" />
+                            </div>
+                            <button type="submit" class="btn btn-success me-2">Сохранить</button>
+                            <a asp-page="/ClientMain" class="btn btn-secondary">Отмена</a>
+
+                        </form>
+                    }
+                    else
+                    {
+                        <p>Id: @Model.client.Id</p>
+                        <p>Имя: @Model.client.FullName</p>
+                        <p>Дата рождения: @Model.client.DateOfBirth</p>
+                        <p>Логин: @Model.client.Login</p>
+                        <p>Email: @Model.client.Email</p>
+                        <p>Телефон: @Model.client.Phone</p>
+                        <a asp-page="/ClientMain" asp-route-IsEditing="true" class="btn btn-primary">Редактировать</a>
+                        @if (!string.IsNullOrEmpty(Model.Message))
+                        {
+                            <div class="alert alert-success mt-3">@Model.Message</div>
+                        }
+                    }  
                 </div>
             </div>
         </div>
