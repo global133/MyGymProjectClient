@@ -16,10 +16,14 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         document.getElementById('confirmBooking').addEventListener('click', async function () {
-            const formData = new FormData(document.getElementById('bookingForm'));
+            const form = document.getElementById('bookingForm');
+            const formData = new FormData(form);
+
+            const trainerId = form.querySelector('#trainerId').value;  // <-- берём из скрытого input
+            const slotId = form.querySelector('#bookingTime').value;   // если нужно
 
             try {
-                const response = await fetch(`/api/trainings/${trainerId}/clients/${clientId}`, {
+                const response = await fetch(`http://localhost:5155/api/trainings/${trainerId}/clients/${clientId}`, {
                     method: 'POST',
                     body: formData
                 });
@@ -40,7 +44,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
 async function loadTrainerSchedule(trainerId) {
     try {
-        const response = await fetch(`/api/trainings/trainer/${trainerId}`);
+        const response = await fetch(`http://localhost:5155/api/trainings/trainer/${trainerId}`);
+        console.log('HTTP Status:', response.status, response.statusText);
         if (!response.ok) throw new Error("Ошибка загрузки расписания");
 
         const schedule = await response.json();

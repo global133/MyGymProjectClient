@@ -52,13 +52,10 @@
                                 <p class="card-text"> <strong>Возраст</strong> @trainer.Age лет </p>
                                 <p class="card-text"><strong>Специализация:</strong> @trainer.Specialization</p>
                                 <p class="card-text">@trainer.Description</p>
-                                <a href="#"
-                                   class="btn btn-primary"
-                                   data-bs-toggle="modal"
-                                   data-bs-target="#bookingModal"
-                                   data-trainer-id="@trainer.Id"
-                                   data-trainer-name="@trainer.FullName">
-                                    Записаться
+                                <a class="btn btn-primary"
+                                   asp-page="/BookTraining"
+                                   asp-route-trainerId="@trainer.Id">
+                                    Перейти к бронированию
                                 </a>
                             </div>
                         </div>
@@ -78,6 +75,10 @@
                                 <div class="mb-3">
                                     <label class="form-label">Дата</label>
                                     <input type="date" class="form-control" id="bookingDate" name="bookingDate" min="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Свободные слоты</label>
+                                    <div id="availableSlots"></div>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Время</label>

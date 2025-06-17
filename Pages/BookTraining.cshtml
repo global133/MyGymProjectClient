@@ -1,0 +1,56 @@
+﻿@page
+@model MyGymProject.Client.Pages.BookTrainingModel
+@{
+    ViewData["Title"] = "Запись на тренировку";
+}
+
+<h2>Запись к тренеру: @Model.Trainer.FullName</h2>
+
+<p>Выберите подходящий день и время:</p>
+
+<form method="post">
+    <input type="hidden" asp-for="SelectedTrainingId" />
+
+    <table class="table table-bordered text-center">
+        <thead>
+            <tr>
+                <th>Дата</th>
+                @foreach (var time in Model.TimeSlots)
+                {
+                    <th>@time</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var date in Model.SlotMatrix.Keys)
+            {
+                <tr>
+                    <td>@date.ToString("dd.MM.yyyy")</td>
+                    @foreach (var time in Model.TimeSlots)
+                    {
+                        if (Model.SlotMatrix[date].TryGetValue(time, out var slot))
+                        {
+                            var isFull = slot.ClientNames?.Count >= 10;
+                            <td>
+                                @if (isFull)
+                                {
+                                    <button class="btn btn-secondary btn-sm" disabled>Занято</button>
+                                }
+                                else
+                                {
+                                    <button type="submit" name="SelectedTrainingId" value="@slot.Id" class="btn btn-success btn-sm">
+                                        Записаться
+                                    </button>
+                                }
+                            </td>
+                        }
+                        else
+                        {
+                            <td>-</td>
+                        }
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</form>
