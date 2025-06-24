@@ -2,55 +2,113 @@
 @model MyGymProject.Client.Pages.BookTrainingModel
 @{
     ViewData["Title"] = "Запись на тренировку";
+    var currentDate = DateTime.Today;
+    var startOfWeek = currentDate.AddDays(-(int)currentDate.DayOfWeek + (int)DayOfWeek.Monday);
+    var daysOfWeek = new List<DateTime>();
+    for (int i = 0; i < 7; i++)
+    {
+        daysOfWeek.Add(startOfWeek.AddDays(i));
+    }
 }
 
-<h2>Запись к тренеру: @Model.Trainer.FullName</h2>
 
-<p>Выберите подходящий день и время:</p>
+<div class="container-fluid p-0">
+    <div class="row">
+        <div class="col-2 bg-dark vh-100">
+            <h5>Меню</h5>
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link text-light" asp-page="/ClientMain">Личный кабинет</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light" asp-page="/ClientSchedule">Мои тренировки</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light" asp-page="/ClientBooking">Расписание</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-danger" asp-page="/Logout">Выход</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-10 p-4">
+            <h2>Запись к тренеру: @Model.Trainer.FullName</h2>
 
-<form method="post">
-    <input type="hidden" asp-for="SelectedTrainingId" />
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <a asp-page="./BookTraining"
+                   asp-route-TrainerId="@Model.TrainerId"
+                   asp-route-WeekOffset="@(Model.WeekOffset - 1)"
+                   class="btn btn-outline-primary">
+                    <i class="fas fa-chevron-left"></i> Предыдущая неделя
+                </a>
 
-    <table class="table table-bordered text-center">
-        <thead>
-            <tr>
-                <th>Дата</th>
-                @foreach (var time in Model.TimeSlots)
-                {
-                    <th>@time</th>
-                }
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var date in Model.SlotMatrix.Keys)
-            {
-                <tr>
-                    <td>@date.ToString("dd.MM.yyyy")</td>
-                    @foreach (var time in Model.TimeSlots)
-                    {
-                        if (Model.SlotMatrix[date].TryGetValue(time, out var slot))
+                <h4 class="mb-0">
+                    @Model.StartOfWeek.ToString("dd.MM.yyyy") - @Model.EndOfWeek.ToString("dd.MM.yyyy")
+                </h4>
+
+                <a asp-page="./BookTraining"
+                   asp-route-TrainerId="@Model.TrainerId"
+                   asp-route-WeekOffset="@(Model.WeekOffset + 1)"
+                   class="btn btn-outline-primary">
+                    Следующая неделя <i class="fas fa-chevron-right"></i>
+                </a>
+            </div>
+
+            <form method="post">
+                <input type="hidden" asp-for="SelectedTrainingId" />
+
+                <table class="table table-bordered text-center">
+                    <thead>
+                        <tr>
+                            <th>Время</th>
+                            @foreach (var day in daysOfWeek)
+                            {
+                                <th>@day.ToString("dd.MM.yyyy")<br>@System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetDayName(day.DayOfWeek)</th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var time in Model.TimeSlots)
                         {
-                            var isFull = slot.ClientNames?.Count >= 10;
-                            <td>
-                                @if (isFull)
+                            <tr>
+                                <td>@time</td>
+                                @foreach (var day in daysOfWeek)
                                 {
-                                    <button class="btn btn-secondary btn-sm" disabled>Занято</button>
+                                    var dayOfWeek = day.DayOfWeek;
+                                    if (Model.WeeklySchedule.ContainsKey(dayOfWeek) &&
+                                    Model.WeeklySchedule[dayOfWeek].TryGetValue(time, out var slot) &&
+                                    slot != null)
+                                    {
+                                        var maxGroup = 3;
+                                        var isFull = slot.ClientNames?.Count >= maxGroup;
+                                        <td>
+                                            @if (isFull)
+                                            {
+                                                <button class="btn btn-secondary btn-sm" disabled>Занято</button>
+                                            }
+                                            else
+                                            {
+                                                <p>Есть @(maxGroup - slot.ClientNames?.Count) место(а)</p>
+                                                <button type="submit" name="SelectedTrainingId" value="@slot.Id" class="btn btn-success btn-sm">
+                                                    Записаться
+                                                </button>
+                                            }
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                            <button type="submit" name="SelectedTrainingId" class="btn btn-outline-success btn-sm">
+                                                Забронировать
+                                            </button>
+                                        </td>
+                                    }
                                 }
-                                else
-                                {
-                                    <button type="submit" name="SelectedTrainingId" value="@slot.Id" class="btn btn-success btn-sm">
-                                        Записаться
-                                    </button>
-                                }
-                            </td>
+                            </tr>
                         }
-                        else
-                        {
-                            <td>-</td>
-                        }
-                    }
-                </tr>
-            }
-        </tbody>
-    </table>
-</form>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </div>
+</div>
