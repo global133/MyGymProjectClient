@@ -1,0 +1,105 @@
+﻿@page
+@model MyGymProject.Client.Pages.ClientBookingModel
+@{
+}
+
+
+<div class="container-fluid p-0">
+    <div class="row">
+        <div class="col-2 bg-dark">
+            <h5>Меню</h5>
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link text-light" asp-page="/ClientMain">Личный кабинет</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light" asp-page="/ClientSchedule">Мои тренировки</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light" asp-page="/ClientBooking">Расписание</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-danger" asp-page="/Logout">Выход</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-10 p-4">
+            <div>
+                <h1 class="display-3 mt-4 mb-4"> Запись на тренировку</h1>
+                <p><em>Готовы сделать первый шаг к своему телу мечты? Запишитесь на тренировку с профессиональным тренером прямо сейчас!</em></p>
+                <hr>
+                <h2>Что вас ждёт:</h2>
+                <ul>
+                    <li><strong>Индивидуальный подход</strong> — тренировка под вашу цель и уровень подготовки</li>
+                    <li><strong>Профессиональные тренеры</strong> — сертифицированные специалисты с опытом</li>
+                    <li><strong>Разные направления</strong>: фитнес, йога, пилатес, тяжёлая атлетика</li>
+                    <li><strong>Удобный график</strong> — выбирайте дату и время онлайн</li>
+                </ul>
+                <h2>Как записаться:</h2>
+                <ol>
+                    <li>Выберите тренера из списка ниже</li>
+                    <li>Нажмите <code>"Записаться"</code> рядом с удобным временем</li>
+                    <li>Заполните короткую форму — и ждите подтверждение</li>
+                </ol>
+            </div>
+            <div class="row">
+                @foreach (var trainer in Model.Trainers)
+                {
+                    <div class="col-md-4 mb-4">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title">@trainer.FullName</h5>
+                                <p class="card-text"> <strong>Возраст</strong> @trainer.Age лет </p>
+                                <p class="card-text"><strong>Специализация:</strong> @trainer.Specialization</p>
+                                <p class="card-text">@trainer.Description</p>
+                                <a class="btn btn-primary"
+                                   asp-page="/BookTraining"
+                                   asp-route-trainerId="@trainer.Id">
+                                    Перейти к бронированию
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="modal fade" id="bookingModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Запись к тренеру: <span id="trainerName"></span></h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="bookingForm">
+                                <input type="hidden" id="trainerId" name="trainerId" />
+                                <div class="mb-3">
+                                    <label class="form-label">Дата</label>
+                                    <input type="date" class="form-control" id="bookingDate" name="bookingDate" min="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Свободные слоты</label>
+                                    <div id="availableSlots"></div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Время</label>
+                                    <select class="form-select" id="bookingTime" name="bookingTime">
+                                        <option value="09:00">09:00 - 10:00</option>
+                                        <option value="10:00">10:00 - 11:00</option>
+                                        <option value="11:00">11:00 - 12:00</option>
+                                        <!-- Добавьте другие слоты -->
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                            <button type="button" class="btn btn-primary" id="confirmBooking">Подтвердить</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/js/clientBooking.js"></script>
