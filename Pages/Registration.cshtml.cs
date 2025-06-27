@@ -83,7 +83,6 @@ namespace MyGymProject.Client.Pages
                 {
                     var content = await response.Content.ReadAsStringAsync();
 
-                    // Попробуем десериализовать структуру с ошибками валидации
                     var problemDetails = JsonSerializer.Deserialize<ValidationProblemDetails>(content, new JsonSerializerOptions
                     {
                         PropertyNameCaseInsensitive = true
@@ -91,7 +90,6 @@ namespace MyGymProject.Client.Pages
 
                     if (problemDetails?.Errors != null && problemDetails.Errors.Any())
                     {
-                        // Собираем все сообщения ошибок в одну строку
                         ErrorMessage = string.Join(" ", problemDetails.Errors.SelectMany(e => e.Value));
                     }
                     else
