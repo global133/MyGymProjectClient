@@ -11,9 +11,6 @@ namespace MyGymProject.Client.Pages
         [BindProperty(SupportsGet = true)]
         public int TrainerId { get; set; }
 
-        [BindProperty]
-        public int SelectedTrainingId { get; set; }
-
         [BindProperty(SupportsGet = true)]
         public int WeekOffset { get; set; } = 0;
         public TrainerReadDto Trainer { get; set; }
@@ -68,8 +65,8 @@ namespace MyGymProject.Client.Pages
 
         public async Task<IActionResult> OnPostAsync()
         {
-            var clientId = await LoadClientAsync();
-            var response = await this._httpClient.PostAsJsonAsync($"http://localhost:5155/api/trainings/{SelectedTrainingId}/clients/{clientId}", new { });
+            var client = await LoadClientAsync();
+            var response = await this._httpClient.PostAsJsonAsync($"http://localhost:5155/api/trainings/{TrainerId}/clients/{client.Id}", new { });
 
             if (!response.IsSuccessStatusCode)
             {

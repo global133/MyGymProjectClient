@@ -55,7 +55,7 @@
             </div>
 
             <form method="post">
-                <input type="hidden" asp-for="SelectedTrainingId" />
+                <input type="hidden" asp-for="TrainerId" />
 
                 <table class="table table-bordered text-center">
                     <thead>
@@ -89,7 +89,7 @@
                                             else
                                             {
                                                 <p>Есть @(maxGroup - slot.ClientNames?.Count) место(а)</p>
-                                                <button type="submit" name="SelectedTrainingId" value="@slot.Id" class="btn btn-success btn-sm">
+                                                <button type="submit" class="btn btn-success btn-sm">
                                                     Записаться
                                                 </button>
                                             }
@@ -98,7 +98,7 @@
                                     else
                                     {
                                         <td>
-                                            <button type="submit" name="SelectedTrainingId" class="btn btn-outline-success btn-sm">
+                                            <button type="submit" class="btn btn-outline-success btn-sm">
                                                 Забронировать
                                             </button>
                                         </td>
