@@ -16,16 +16,18 @@
                     <a class="nav-link text-light" asp-page="/ClientSchedule">Мои тренировки</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-light" href="/Schedule">Расписание</a>
+                    <a class="nav-link text-light" asp-page="/ClientBooking">Расписание</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-danger" href="/Logout">Выход</a>
+                    <a class="nav-link text-danger" asp-page="/Logout">Выход</a>
                 </li>
             </ul>
         </div>
         <div class="col-10 p-4">
             <h1 class="display-3 mt-4 mb-4">Мои тренировки</h1>
-
+            <div class="mb-4">
+                <p>На этой странице отображается ваше актуальное расписание тренировок. Следите за своими занятиями, планируйте нагрузки и не пропускайте важные тренировки.</p>
+            </div>
             <form method="get" class="row g-3 mb-4">
                 <div class="col-auto">
                     <label for="selectedDate" class="form-label">Фильтр по дате:</label>
