@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Caching.Memory;
 using MyGymProject.Server.DTOs.Trainer;
 using MyGymProject.Server.DTOs.Training;
 using MyGymProject.Server.Models;
@@ -24,14 +25,22 @@ namespace MyGymProject.Client.Pages
         public DateTime StartOfWeek { get; private set; }
         public DateTime EndOfWeek { get; private set; }
 
+        private readonly IMemoryCache _cache;
         public BookTrainingModel(
             IHttpClientFactory httpClientFactory, 
-            IHttpContextAccessor contextAccessor) : base(httpClientFactory, contextAccessor)
-        {}
+            IHttpContextAccessor contextAccessor, 
+            IMemoryCache memoryCache) : base(httpClientFactory, contextAccessor)
+        { _cache = memoryCache; }
 
         public async Task<IActionResult> OnGetAsync()
         {
-            Trainer = await this._httpClient.GetFromJsonAsync<TrainerReadDto>($"http://localhost:5155/api/Trainers/{TrainerId}");
+            if (!_cache.TryGetValue($"trainer_{TrainerId}", out TrainerReadDto trainer))
+            {
+                trainer = await _httpClient.GetFromJsonAsync<TrainerReadDto>($"http://localhost:5155/api/Trainers/{TrainerId}");
+                _cache.Set($"trainer_{TrainerId}", trainer, TimeSpan.FromMinutes(10));
+            }
+
+            //Trainer = await this._httpClient.GetFromJsonAsync<TrainerReadDto>($"http://localhost:5155/api/Trainers/{TrainerId}");
 
             var schedule = await this._httpClient.GetFromJsonAsync<List<TrainingResponseDTO>>($"http://localhost:5155/api/trainings/trainer/{TrainerId}");
 
