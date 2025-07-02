@@ -32,7 +32,7 @@ namespace MyGymProject.Client.Pages
             Trainings = await _cacheService.GetOrSetAsync(
             $"trainings_{TrainerId}",
             () => _httpClient.GetFromJsonAsync<List<TrainingResponseDTO>>($"http://localhost:5155/api/Trainings/trainer/{TrainerId}"),
-            TimeSpan.FromMinutes(5)
+            TimeSpan.FromMinutes(10)
         );
 
             if ( Trainings == null )

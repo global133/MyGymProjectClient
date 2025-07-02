@@ -5,7 +5,7 @@
 
 <div class="container-fluid p-0">
     <div class="row">
-        <div class="col-2 bg-dark vh-100">
+        <div class="col-2 bg-dark p-3" style="min-height: 100vh; position: sticky; top: 0;">
             <h5>Меню</h5>
             <ul class="nav flex-column">
                 <li class="nav-item">
@@ -23,18 +23,22 @@
             </ul>
         </div>
         <div class="col-10 p-4">
-            <h5 class="display-5">Выберете тренировку</h5>
-            @foreach (var trainings in Model.Trainings)
-            {
-                <div class="col-md-4 mb-4">
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <p></p>
+            <h5 class="display-5">Выберите тренировку</h5>
+            <div class="d-flex flex-wrap">
+                @foreach (var training in Model.Trainings)
+                {
+                    <div class="col-md-4 mb-4">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <p>@training.Id</p>
+                                <p>@training.TrainerName</p>
+                                <p>@training.Name</p>
+                                <p>@training.HallName</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-            }
-            
+                }
+            </div>
         </div>
     </div>
 </div>
