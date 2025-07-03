@@ -9,8 +9,8 @@
         <partial name="_ClientSidebar.cshtml" />
         <div class="col-10 p-4">
             <div>
-                <h1 class="display-3 mt-4 mb-4"> Запись на тренировку</h1>
-                <p><em>Готовы сделать первый шаг к своему телу мечты? Запишитесь на тренировку с профессиональным тренером прямо сейчас!</em></p>
+                <h1 class="display-4 mt-4 mb-4 text-primary"> Запись на тренировку</h1>
+                <p class="text-muted">Готовы сделать первый шаг к своему телу мечты? Запишитесь на тренировку с профессиональным тренером прямо сейчас!</p>
                 <hr>
                 <h2>Что вас ждёт:</h2>
                 <ul>
@@ -24,7 +24,7 @@
                 @foreach (var trainer in Model.Trainers)
                 {
                     <div class="col-md-4 mb-4">
-                        <div class="card shadow-sm">
+                        <div class="card training-card shadow-sm">
                             <div class="card-body">
                                 <h5 class="card-title">@trainer.FullName</h5>
                                 <p class="card-text"> <strong>Возраст</strong> @trainer.Age лет </p>
@@ -33,7 +33,7 @@
                                 <a class="btn btn-primary"
                                    asp-page="/SelectTraining"
                                    asp-route-trainerId="@trainer.Id">
-                                    Перейти к бронированию
+                                    Перейти к выбору тренировки
                                 </a>
                             </div>
                         </div>

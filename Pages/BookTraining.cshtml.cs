@@ -14,8 +14,11 @@ namespace MyGymProject.Client.Pages
 
         [BindProperty(SupportsGet = true)]
         public int WeekOffset { get; set; } = 0;
-        public TrainerReadDto Trainer { get; set; }
 
+        [BindProperty(SupportsGet = true)]
+        public string TrainingName { get; set; }
+
+        public TrainerReadDto Trainer { get; set; }
         public List<string> TimeSlots { get; set; } = new()
         {
             "08:00", "10:00", "12:00", "14:00", "16:00", "18:00"
@@ -40,9 +43,7 @@ namespace MyGymProject.Client.Pages
                 _cache.Set($"trainer_{TrainerId}", trainer, TimeSpan.FromMinutes(10));
             }
 
-            //Trainer = await this._httpClient.GetFromJsonAsync<TrainerReadDto>($"http://localhost:5155/api/Trainers/{TrainerId}");
-
-            var schedule = await this._httpClient.GetFromJsonAsync<List<TrainingResponseDTO>>($"http://localhost:5155/api/trainings/trainer/{TrainerId}");
+            var schedule = await this._httpClient.GetFromJsonAsync<List<TrainingResponseDTO>>($"http://localhost:5155/api/trainings/{TrainingName}trainer/{TrainerId}");
 
             var currentDate = DateTime.Today;
             StartOfWeek = currentDate.AddDays(-(int)currentDate.DayOfWeek + (int)DayOfWeek.Monday)

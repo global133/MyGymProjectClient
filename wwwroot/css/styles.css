@@ -21,10 +21,10 @@
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
-    .training-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-    }
+.training-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
 
 .card-header {
     border-bottom: none;
@@ -33,3 +33,22 @@
 .search-box {
     max-width: 500px;
 }
+
+html, body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+.content-wrapper {
+    flex: 1 0 auto;
+}
+
+.footer {
+    flex-shrink: 0;
+    width: 100%;
+}
+

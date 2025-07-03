@@ -52,9 +52,12 @@
                                 </div>
                             </div>
                             <div class="card-footer bg-transparent">
-                                <button class="btn btn-outline-primary w-100">
+                                <a class="btn btn-outline-primary w-100"
+                                asp-page="/ClientSchedule"
+                                asp-route-TrainingName="@training.Name"
+                                asp-route-TrainerId="@Model.TrainerId">
                                     <i class="fas fa-plus-circle me-2"></i>Записаться
-                                </button>
+                                </a>
                             </div>
                         </div>
                     </div>
