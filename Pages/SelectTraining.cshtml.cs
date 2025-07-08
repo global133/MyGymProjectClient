@@ -15,7 +15,7 @@ namespace MyGymProject.Client.Pages
         public int TrainerId { get; set; }
 
         [BindProperty]
-        public List<TrainingResponseDTO>? Trainings { get; set; }
+        public List<TrainingResponseDTO>? Trainings { get; set; } 
 
         private readonly HttpClient _httpClient;
         private readonly CacheService _cacheService;
@@ -35,17 +35,13 @@ namespace MyGymProject.Client.Pages
             TimeSpan.FromMinutes(10)
         );
 
-            if ( Trainings == null )
+            if ( Trainings.Count == 0 )
             {
-                ErrorMessege = "Не удалось получить данные";
+                ErrorMessege = "Выбранный тренер не ведет тренировки";
             }
             return Page();
          
         }
 
-        //public async Task<IActionResult> OnPostAsync()
-        //{
-
-        //}
     }
 }

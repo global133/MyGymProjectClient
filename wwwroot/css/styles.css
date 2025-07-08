@@ -52,3 +52,23 @@ body {
     width: 100%;
 }
 
+.bg-light-primary {
+    background-color: rgba(13, 110, 253, 0.05);
+}
+
+.rounded {
+    border-radius: 0.5rem !important;
+    overflow: hidden;
+}
+
+.table {
+    background-color: white;
+}
+
+    .table th {
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .table tr:not(:last-child) {
+        border-bottom: 1px solid #f0f0f0;
+    }

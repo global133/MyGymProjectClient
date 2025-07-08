@@ -10,59 +10,63 @@
         <partial name="_ClientSidebar.cshtml" />
         <!-- Основной контент -->
         <div class="col-10 p-4 content-area">
-            <div class="header-section mb-5">
-                <h1 class="display-4 mb-3 text-primary">Выберите свою идеальную тренировку</h1>
-                <p class="lead text-muted">
-                    Наш фитнес-клуб предлагает разнообразные программы для всех уровней подготовки.
-                    Выберите подходящую тренировку и начните свой путь к совершенству уже сегодня!
-                </p>
-                <div class="search-box mb-4">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Поиск тренировок...">
-                        <button class="btn btn-primary" type="button">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </div>
+            @if(Model.Trainings.Count == 0)
+            {
+                <div class="alert alert-info">
+                    @Model.ErrorMessege
                 </div>
-            </div>
-
-            <div class="row g-4">
-                @foreach (var training in Model.Trainings)
-                {
-                    <div class="col-lg-4 col-md-6">
-                        <div class="card training-card h-100">
-                            <div class="card-header bg-primary text-white">
-                                <h5 class="card-title mb-0">@training.Name</h5>
-                            </div>
-                            <div class="card-body">
-                                <div class="d-flex align-items-center mb-3">
-                                    <i class="fas fa-user-tie me-2 text-secondary"></i>
-                                    <span class="text-muted">Тренер:</span>
-                                    <strong class="ms-2">@training.TrainerName</strong>
-                                </div>
-                                <div class="d-flex align-items-center mb-3">
-                                    <i class="fas fa-map-marker-alt me-2 text-secondary"></i>
-                                    <span class="text-muted">Зал:</span>
-                                    <strong class="ms-2">@training.HallName</strong>
-                                </div>
-                                <div class="d-flex align-items-center mb-3">
-                                    <i class="fas fa-id-card me-2 text-secondary"></i>
-                                    <span class="text-muted">ID:</span>
-                                    <strong class="ms-2">#@training.Id</strong>
-                                </div>
-                            </div>
-                            <div class="card-footer bg-transparent">
-                                <a class="btn btn-outline-primary w-100"
-                                asp-page="/ClientSchedule"
-                                asp-route-TrainingName="@training.Name"
-                                asp-route-TrainerId="@Model.TrainerId">
-                                    <i class="fas fa-plus-circle me-2"></i>Записаться
-                                </a>
-                            </div>
+            }
+            else
+            {
+                <div class="header-section mb-5">
+                    <h1 class="display-4 mb-3 text-primary">Выберите свою идеальную тренировку</h1>
+                    <p class="lead text-muted">
+                        Наш фитнес-клуб предлагает разнообразные программы для всех уровней подготовки.
+                        Выберите подходящую тренировку и начните свой путь к совершенству уже сегодня!
+                    </p>
+                    <div class="search-box mb-4">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Поиск тренировок...">
+                            <button class="btn btn-primary" type="button">
+                                <i class="fas fa-search"></i>
+                            </button>
                         </div>
                     </div>
-                }
-            </div>
+                </div>
+
+                <div class="row g-4">
+                    @foreach (var training in Model.Trainings)
+                    {
+                        <div class="col-lg-4 col-md-6">
+                            <div class="card training-card h-100">
+                                <div class="card-header bg-primary text-white">
+                                    <h5 class="card-title mb-0">@training.Name</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <i class="fas fa-user-tie me-2 text-secondary"></i>
+                                        <span class="text-muted">Тренер:</span>
+                                        <strong class="ms-2">@training.TrainerName</strong>
+                                    </div>
+                                    <div class="d-flex align-items-center mb-3">
+                                        <i class="fas fa-map-marker-alt me-2 text-secondary"></i>
+                                        <span class="text-muted">Зал:</span>
+                                        <strong class="ms-2">@training.HallName</strong>
+                                    </div>
+                                </div>
+                                <div class="card-footer bg-transparent">
+                                    <a class="btn btn-outline-primary w-100"
+                                       asp-page="/BookTraining"
+                                       asp-route-TrainingId="@training.Id"
+                                       asp-route-TrainerId="@Model.TrainerId">
+                                        <i class="fas fa-plus-circle me-2"></i>Выбрать тренировку
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
         </div>
     </div>
 </div>
