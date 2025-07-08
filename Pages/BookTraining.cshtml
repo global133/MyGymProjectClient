@@ -2,113 +2,84 @@
 @model MyGymProject.Client.Pages.BookTrainingModel
 @{
     ViewData["Title"] = "Запись на тренировку";
-    var currentDate = DateTime.Today;
-    var startOfWeek = currentDate.AddDays(-(int)currentDate.DayOfWeek + (int)DayOfWeek.Monday);
-    var daysOfWeek = new List<DateTime>();
-    for (int i = 0; i < 7; i++)
-    {
-        daysOfWeek.Add(startOfWeek.AddDays(i));
-    }
 }
-
 
 <div class="container-fluid p-0">
     <div class="row">
-        <div class="col-2 bg-dark p-3" style="min-height: 100vh; position: sticky; top: 0;">
-            <h5>Меню</h5>
-            <ul class="nav flex-column">
-                <li class="nav-item">
-                    <a class="nav-link text-light" asp-page="/ClientMain">Личный кабинет</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light" asp-page="/ClientSchedule">Мои тренировки</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light" asp-page="/ClientBooking">Расписание</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-danger" asp-page="/Logout">Выход</a>
-                </li>
-            </ul>
-        </div>
-        <div class="col-10 p-4">
-            <h2>Запись к тренеру: @Model.Trainer.FullName</h2>
+        <!-- Боковое меню -->
+        <partial name="_ClientSidebar.cshtml" />
 
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <a asp-page="./BookTraining"
-                   asp-route-TrainerId="@Model.TrainerId"
-                   asp-route-WeekOffset="@(Model.WeekOffset - 1)"
-                   class="btn btn-outline-primary">
-                    <i class="fas fa-chevron-left"></i> Предыдущая неделя
-                </a>
-
-                <h4 class="mb-0">
-                    @Model.StartOfWeek.ToString("dd.MM.yyyy") - @Model.EndOfWeek.ToString("dd.MM.yyyy")
-                </h4>
-
-                <a asp-page="./BookTraining"
-                   asp-route-TrainerId="@Model.TrainerId"
-                   asp-route-WeekOffset="@(Model.WeekOffset + 1)"
-                   class="btn btn-outline-primary">
-                    Следующая неделя <i class="fas fa-chevron-right"></i>
-                </a>
+        <!-- Основной контент -->
+        <div class="col-md-10 col-lg-10 p-4">
+            <div class="d-flex flex-column mb-4">
+                <h2 class="display-5 mb-3">Запись к тренеру: @Model.Trainer.FullName</h2>
+                <h2 class="display-5">Тренировка: @Model.Training.Name</h2>
             </div>
 
             <form method="post">
                 <input type="hidden" asp-for="TrainerId" />
 
-                <table class="table table-bordered text-center">
-                    <thead>
-                        <tr>
-                            <th>Время</th>
-                            @foreach (var day in daysOfWeek)
-                            {
-                                <th>@day.ToString("dd.MM.yyyy")<br>@System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetDayName(day.DayOfWeek)</th>
-                            }
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var time in Model.TimeSlots)
-                        {
-                            <tr>
-                                <td>@time</td>
-                                @foreach (var day in daysOfWeek)
+                <div class="table-responsive">
+                    <table class="table table-borderless rounded" style="table-layout: fixed;">
+                        <thead class="thead-dark">
+                            <tr class="bg-light">
+                                <th style="width: 10%;" class="text-start ps-4 py-3">Время</th>
+                                @foreach (var day in Model.DaysOfWeek)
                                 {
-                                    var dayOfWeek = day.DayOfWeek;
-                                    if (Model.WeeklySchedule.ContainsKey(dayOfWeek) &&
-                                    Model.WeeklySchedule[dayOfWeek].TryGetValue(time, out var slot) &&
-                                    slot != null)
+                                    <th class="py-3">
+                                        <div class="fw-bold">@day.ToString("dd.MM")</div>
+                                        <div class="small text-muted">@day.ToString("ddd")</div>
+                                    </th>
+                                }
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var session in Model.UpcomingSessions)
+                            {
+                                <tr class="border-top">
+                                    <td class="align-middle fw-bold text-start ps-4">@session.StartTime.ToString("HH:mm")</td>
+
+                                    @foreach (var day in Model.DaysOfWeek)
                                     {
-                                        var maxGroup = 3;
-                                        var isFull = slot.ClientNames?.Count >= maxGroup;
-                                        <td>
-                                            @if (isFull)
+                                        <td class="align-middle text-center" style="height: 100px; @(day.Date == DateTime.Today ? "background-color: #fff9e6;" : "")">
+                                            @if (session.StartTime.Date == day.Date)
                                             {
-                                                <button class="btn btn-secondary btn-sm" disabled>Занято</button>
+                                                const int MaxGroupSize = 3;
+                                                var availableSeats = MaxGroupSize - session.Clients.Count;
+
+                                                <div class="h-100 d-flex flex-column justify-content-center p-3 rounded @(day.Date == DateTime.Today ? "bg-warning bg-opacity-10" : availableSeats <= 0 ? "bg-light" : "bg-light-primary")">
+                                                    @if (availableSeats <= 0)
+                                                    {
+                                                        <span class="badge bg-light text-danger border border-danger w-100 py-2 mb-2">Группа заполнена</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="badge bg-success bg-opacity-10 text-success mb-2">Осталось @availableSeats @(availableSeats == 1 ? "место" : "места")</span>
+                                                        <div class="text-muted small mb-2">
+                                                            <div class="text-center">Продолжительность: @session.StartTime.ToString("HH:mm") - @session.EndTime.ToString("HH:mm")</div>
+                                                        </div>
+                                                        <button type="submit"
+                                                                name="sessionId"
+                                                                value="@session.Id"
+                                                                class="btn btn-success btn-sm w-100">
+                                                            Записаться
+                                                        </button>
+                                                    }
+                                                </div>
                                             }
                                             else
                                             {
-                                                <p>Есть @(maxGroup - slot.ClientNames?.Count) место(а)</p>
-                                                <button type="submit" class="btn btn-success btn-sm">
-                                                    Записаться
-                                                </button>
+                                                <div class="text-muted">—</div>
                                             }
                                         </td>
                                     }
-                                    else
-                                    {
-                                        <td>
-                                            <button type="submit" class="btn btn-outline-success btn-sm">
-                                                Забронировать
-                                            </button>
-                                        </td>
-                                    }
-                                }
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
             </form>
         </div>
     </div>
 </div>
+
