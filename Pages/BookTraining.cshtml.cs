@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Caching.Memory;
 using MyGymProject.Server.DTOs.Trainer;
-using MyGymProject.Server.DTOs.Training;
 using MyGymProject.Server.DTOs.TrainingSession;
 using MyGymProject.Server.Models;
 
@@ -11,10 +10,6 @@ namespace MyGymProject.Client.Pages
 {
     public class BookTrainingModel : AuthorizedPageModel
     {
-        [BindProperty(SupportsGet = true)]
-        public int TrainingId { get; set; }
-        public TrainingResponseDTO Training { get; set; }
-
 
         [BindProperty(SupportsGet = true)]
         public int TrainerId { get; set; }
@@ -53,14 +48,13 @@ namespace MyGymProject.Client.Pages
             var currentDate = DateTime.Today;
             StartOfWeek = currentDate.AddDays(-(int)currentDate.DayOfWeek + (int)DayOfWeek.Monday)
                           .AddDays(WeekOffset * 7);
-            EndOfWeek = StartOfWeek.AddDays(6);
+            EndOfWeek = StartOfWeek.AddDays(7);
 
             DaysOfWeek = Enumerable.Range(0, 7)
                 .Select(i => StartOfWeek.AddDays(i))
                 .ToList();
 
-            Training = await _httpClient.GetFromJsonAsync<TrainingResponseDTO>($"http://localhost:5155/api/trainings/{TrainingId}");
-            UpcomingSessions = await _httpClient.GetFromJsonAsync<List<TrainingSessionReadDto>>($"http://localhost:5155/api/trainings/{TrainingId}/sessions/upcoming");
+            UpcomingSessions = await _httpClient.GetFromJsonAsync<List<TrainingSessionReadDto>>($"http://localhost:5155/api/trainings/bytrainer/{Trainer.Id}");
 
             // Фильтрация по текущей неделе
             UpcomingSessions = UpcomingSessions?

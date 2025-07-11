@@ -33,18 +33,16 @@
                             <th>Время</th>
                             <th>Тренер</th>
                             <th>Зал</th>
-                            <th>Тип тренировки</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var training in Model.Trainings)
                         {
                             <tr>
-                                <td>@training.Time.ToString("dd.MM.yyyy")</td>
-                                <td>@training.Time.ToString("HH:mm")</td>
+                                <td>@training.StartTime.ToString("dd.MM.yyyy")</td>
+                                <td>@training.EndTime.ToString("HH:mm")</td>
                                 <td>@training.TrainerName</td>
                                 <td>@training.HallName</td>
-                                <td>@(training.IsGroup ? "Групповая" : "Индивидуальная")</td>
                             </tr>
                         }
                     </tbody>

@@ -11,74 +11,85 @@
 
         <!-- Основной контент -->
         <div class="col-md-10 col-lg-10 p-4">
-            <div class="d-flex flex-column mb-4">
-                <h2 class="display-5 mb-3">Запись к тренеру: @Model.Trainer.FullName</h2>
-                <h2 class="display-5">Тренировка: @Model.Training.Name</h2>
-            </div>
+            @if (!Model.UpcomingSessions.Any())
+            {
+                <div>
+                    <h5 class="display-5 text-black-50">Данный тренер пока не проводит тренировки</h5>
+                </div>
+            }
+            else
+            {
+                <div class="d-flex flex-column mb-4">
+                    <h2 class="display-5 mb-3">Запись к тренеру: @Model.Trainer.FullName</h2>
+                    <h2 class="display-5">Тренировка</h2>
+                </div>
 
-            <form method="post">
-                <input type="hidden" asp-for="TrainerId" />
+                <form method="post">
+                    <input type="hidden" asp-for="TrainerId" />
 
-                <div class="table-responsive">
-                    <table class="table table-borderless rounded" style="table-layout: fixed;">
-                        <thead class="thead-dark">
-                            <tr class="bg-light">
-                                <th style="width: 10%;" class="text-start ps-4 py-3">Время</th>
-                                @foreach (var day in Model.DaysOfWeek)
-                                {
-                                    <th class="py-3">
-                                        <div class="fw-bold">@day.ToString("dd.MM")</div>
-                                        <div class="small text-muted">@day.ToString("ddd")</div>
-                                    </th>
-                                }
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var session in Model.UpcomingSessions)
-                            {
-                                <tr class="border-top">
-                                    <td class="align-middle fw-bold text-start ps-4">@session.StartTime.ToString("HH:mm")</td>
-
+                    <div class="table-responsive">
+                        <table class="table table-borderless rounded" style="table-layout: fixed;">
+                            <thead class="thead-dark">
+                                <tr class="bg-light">
+                                    <th style="width: 10%;" class="text-start ps-4 py-3">Время</th>
                                     @foreach (var day in Model.DaysOfWeek)
                                     {
-                                        <td class="align-middle text-center" style="height: 100px; @(day.Date == DateTime.Today ? "background-color: #fff9e6;" : "")">
-                                            @if (session.StartTime.Date == day.Date)
-                                            {
-                                                const int MaxGroupSize = 3;
-                                                var availableSeats = MaxGroupSize - session.Clients.Count;
-
-                                                <div class="h-100 d-flex flex-column justify-content-center p-3 rounded @(day.Date == DateTime.Today ? "bg-warning bg-opacity-10" : availableSeats <= 0 ? "bg-light" : "bg-light-primary")">
-                                                    @if (availableSeats <= 0)
-                                                    {
-                                                        <span class="badge bg-light text-danger border border-danger w-100 py-2 mb-2">Группа заполнена</span>
-                                                    }
-                                                    else
-                                                    {
-                                                        <span class="badge bg-success bg-opacity-10 text-success mb-2">Осталось @availableSeats @(availableSeats == 1 ? "место" : "места")</span>
-                                                        <div class="text-muted small mb-2">
-                                                            <div class="text-center">Продолжительность: @session.StartTime.ToString("HH:mm") - @session.EndTime.ToString("HH:mm")</div>
-                                                        </div>
-                                                        <button type="submit"
-                                                                name="sessionId"
-                                                                value="@session.Id"
-                                                                class="btn btn-success btn-sm w-100">
-                                                            Записаться
-                                                        </button>
-                                                    }
-                                                </div>
-                                            }
-                                            else
-                                            {
-                                                <div class="text-muted">—</div>
-                                            }
-                                        </td>
+                                        <th class="py-3">
+                                            <div class="fw-bold">@day.ToString("dd.MM")</div>
+                                            <div class="small text-muted">@day.ToString("ddd")</div>
+                                        </th>
                                     }
                                 </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </form>
+                            </thead>
+                            <tbody>
+                                @foreach (var session in Model.UpcomingSessions)
+                                {
+                                    <tr class="border-top">
+                                        <td class="align-middle fw-bold text-start ps-4">@session.StartTime.ToString("HH:mm")</td>
+
+                                        @foreach (var day in Model.DaysOfWeek)
+                                        {
+                                            <td class="align-middle text-center" style="height: 100px; @(day.Date == DateTime.Today ? "background-color: #fff9e6;" : "")">
+                                                @if (session.StartTime.Date == day.Date)
+                                                {
+                                                    const int MaxGroupSize = 3;
+                                                    var availableSeats = MaxGroupSize - session.Clients.Count;
+
+                                                    <div class="h-100 d-flex flex-column p-3 rounded @(day.Date == DateTime.Today ? "bg-warning bg-opacity-10" : availableSeats <= 0 ? "bg-light" : "bg-light-primary")">
+                                                        @if (availableSeats <= 0)
+                                                        {
+                                                            <span class="badge bg-light text-danger border border-danger w-100 py-2 mb-2">Группа заполнена</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="justify-content-center small mb-2">
+                                                                <div><strong>@session.TrainingName</strong></div>
+                                                                <div><strong>@session.HallName</strong></div>
+                                                                <span>Продолжительность: @session.StartTime.ToString("HH:mm") - @session.EndTime.ToString("HH:mm")</span>
+                                                            </div>
+                                                            <span class="badge bg-success bg-opacity-10 text-success mb-2">Осталось @availableSeats @(availableSeats == 1 ? "место" : "места")</span>
+                                                            <button type="submit"
+                                                                    name="sessionId"
+                                                                    value="@session.Id"
+                                                                    class="btn btn-success btn-sm w-100">
+                                                                Записаться
+                                                            </button>
+                                                        }
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="text-muted">—</div>
+                                                }
+                                            </td>
+                                        }
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+            }
         </div>
     </div>
 </div>

@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using MyGymProject.Server.DTOs.Client;
-using MyGymProject.Server.DTOs.Training;
+using MyGymProject.Server.DTOs.TrainingSession;
 using MyGymProject.Server.Models;
 
 namespace MyGymProject.Client.Pages
@@ -12,7 +12,7 @@ namespace MyGymProject.Client.Pages
         public DateTime? SelectedDate { get; set; }
 
         [BindProperty]
-        public List<TrainingResponseDTO> Trainings { get; set; }
+        public List<TrainingSessionReadDto> Trainings { get; set; }
         public ClientScheduleModel(IHttpClientFactory httpClientFactory, IHttpContextAccessor contextAccessor) : base(httpClientFactory, contextAccessor) { }
         public async Task<IActionResult> OnGetAsync()
         {
@@ -26,25 +26,25 @@ namespace MyGymProject.Client.Pages
                 return RedirectToPage("/LoginPage");
 
 
-            var response = await _httpClient.GetAsync("http://localhost:5155/api/Trainings/my-schedule");
+            var response = await _httpClient.GetAsync($"http://localhost:5155/api/Clients/schedule{clientData.Id}");
             if (!response.IsSuccessStatusCode)
             {
                 throw new HttpRequestException($"Ошибка: {response.StatusCode}");
             }
 
-            var allTrainings = await response.Content.ReadFromJsonAsync<List<TrainingResponseDTO>>();
+            Trainings = await response.Content.ReadFromJsonAsync<List<TrainingSessionReadDto>>();
 
-            if (SelectedDate.HasValue)
-            {
-                Trainings = allTrainings
-                    .Where(t => t.Time.Date == SelectedDate.Value.Date)
-                    .OrderBy(t => t.Time)
-                    .ToList();
-            }
-            else
-            {
-                Trainings = allTrainings.OrderBy(t => t.Time).ToList();
-            }
+            //if (SelectedDate.HasValue)
+            //{
+            //    Trainings = allTrainings
+            //        .Where(t => t..Date == SelectedDate.Value.Date)
+            //        .OrderBy(t => t.Time)
+            //        .ToList();
+            //}
+            //else
+            //{
+            //    Trainings = allTrainings.OrderBy(t => t.Time).ToList();
+            //}
 
             return Page();
         }
