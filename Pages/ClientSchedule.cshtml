@@ -46,6 +46,7 @@
                             <th>Время</th>
                             <th>Тренер</th>
                             <th>Зал</th>
+                            <th>Действие</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -57,6 +58,13 @@
                                 <td>@training.EndTime.ToString("HH:mm")</td>
                                 <td>@training.TrainerName</td>
                                 <td>@training.HallName</td>
+                                <td>
+                                    <form method="post" asp-page-handler="Delete" class="d-inline">
+                                        <input type="hidden" name="sessionId" value="@training.Id" />
+                                        <button type="submit" class="btn btn-link p-0 text-danger" title="Отменить запись" style="border: none;">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
                             </tr>
                         }
                     </tbody>

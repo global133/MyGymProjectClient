@@ -48,5 +48,21 @@ namespace MyGymProject.Client.Pages
 
             return Page();
         }
+        public async Task<IActionResult> OnPostDeleteAsync(int sessionId)
+        {
+            var client = await LoadClientAsync(); 
+            var response = await _httpClient.DeleteAsync($"http://localhost:5155/api/trainings/{sessionId}/clients/{client.Id}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                TempData["Error"] = "Не удалось отменить запись на тренировку.";
+            }
+            else
+            {
+                TempData["Success"] = "Запись успешно отменена.";
+            }
+
+            return RedirectToPage(); 
+        }
     }
 }
