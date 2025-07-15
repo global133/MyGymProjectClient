@@ -68,14 +68,12 @@ namespace MyGymProject.Client.Pages
         public async Task<IActionResult> OnPostAsync(int sessionId)
         {
             var client = await LoadClientAsync();
-            var response = await _httpClient.PostAsJsonAsync(
-                $"api/trainings/{sessionId}/clients/{client.Id}",
-                new { });
+            var response = await _httpClient.PostAsync($"http://localhost:5155/api/trainings/{sessionId}/clients/{client.Id}", null);
 
             if (!response.IsSuccessStatusCode)
             {
-                TempData["Error"] = "Ќе удалось записатьс€ на тренировку.";
-                return RedirectToPage(new { TrainerId, WeekOffset });
+                TempData["Error"] = "Ќе удалось записатьс€ на тренировку. ¬озможно вы уже записаны на эту тренировку";
+                return RedirectToPage("/ClientSchedule");
             }
 
             TempData["Success"] = "¬ы успешно записались на тренировку!";

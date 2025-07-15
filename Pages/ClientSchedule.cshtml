@@ -9,6 +9,18 @@
         <partial name="_ClientSidebar.cshtml" />
         <div class="col-10 p-4">
             <h1 class="display-3 mt-4 mb-4">Мои тренировки</h1>
+            @if (TempData["Success"] != null)
+            {
+                <div class="alert alert-success">
+                    @TempData["Success"]
+                </div>
+            }
+            @if (TempData["Error"] != null)
+            {
+                <div class="alert alert-danger">
+                    @TempData["Error"]
+                </div>
+            }
             <div class="mb-4">
                 <p>На этой странице отображается ваше актуальное расписание тренировок. Следите за своими занятиями, планируйте нагрузки и не пропускайте важные тренировки.</p>
             </div>
@@ -29,6 +41,7 @@
                 <table class="table table-bordered table-striped">
                     <thead class="table-dark">
                         <tr>
+                            <th>Тренировка</th>
                             <th>Дата</th>
                             <th>Время</th>
                             <th>Тренер</th>
@@ -39,6 +52,7 @@
                         @foreach (var training in Model.Trainings)
                         {
                             <tr>
+                                <td>@training.TrainingName</td>
                                 <td>@training.StartTime.ToString("dd.MM.yyyy")</td>
                                 <td>@training.EndTime.ToString("HH:mm")</td>
                                 <td>@training.TrainerName</td>

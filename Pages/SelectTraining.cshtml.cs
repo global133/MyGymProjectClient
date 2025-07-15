@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Caching.Memory;
 using MyGymProject.Client.Services;
 using MyGymProject.Server.DTOs.Trainer;
-using MyGymProject.Server.DTOs.Training;
+using MyGymProject.Server.DTOs.TrainingSession;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -15,7 +15,7 @@ namespace MyGymProject.Client.Pages
         public int TrainerId { get; set; }
 
         [BindProperty]
-        public List<TrainingResponseDTO>? Trainings { get; set; } 
+        public List<TrainingSessionReadDto>? Trainings { get; set; } 
 
         private readonly HttpClient _httpClient;
         private readonly CacheService _cacheService;
@@ -31,7 +31,7 @@ namespace MyGymProject.Client.Pages
         {
             Trainings = await _cacheService.GetOrSetAsync(
             $"trainings_{TrainerId}",
-            () => _httpClient.GetFromJsonAsync<List<TrainingResponseDTO>>($"http://localhost:5155/api/Trainings/trainer/{TrainerId}"),
+            () => _httpClient.GetFromJsonAsync<List<TrainingSessionReadDto>>($"http://localhost:5155/api/Trainings/trainer/{TrainerId}"),
             TimeSpan.FromMinutes(10)
         );
 

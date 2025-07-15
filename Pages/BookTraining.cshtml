@@ -14,14 +14,13 @@
             @if (!Model.UpcomingSessions.Any())
             {
                 <div>
-                    <h5 class="display-5 text-black-50">Данный тренер пока не проводит тренировки</h5>
+                    <h5 class="display-5 text-black-50">Нет тренировок не текущей неделе</h5>
                 </div>
             }
             else
             {
                 <div class="d-flex flex-column mb-4">
                     <h2 class="display-5 mb-3">Запись к тренеру: @Model.Trainer.FullName</h2>
-                    <h2 class="display-5">Тренировка</h2>
                 </div>
 
                 <form method="post">
