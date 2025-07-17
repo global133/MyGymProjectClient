@@ -32,19 +32,16 @@ namespace MyGymProject.Client.Pages
                 throw new HttpRequestException($"Ошибка: {response.StatusCode}");
             }
 
-            Trainings = await response.Content.ReadFromJsonAsync<List<TrainingSessionReadDto>>();
+            var allTrainings = await response.Content.ReadFromJsonAsync<List<TrainingSessionReadDto>>();
 
-            //if (SelectedDate.HasValue)
-            //{
-            //    Trainings = allTrainings
-            //        .Where(t => t..Date == SelectedDate.Value.Date)
-            //        .OrderBy(t => t.Time)
-            //        .ToList();
-            //}
-            //else
-            //{
-            //    Trainings = allTrainings.OrderBy(t => t.Time).ToList();
-            //}
+            Trainings = SelectedDate.HasValue
+                ? allTrainings
+                    .Where(t => t.StartTime.Date == SelectedDate.Value.Date)
+                    .OrderBy(t => t.StartTime)
+                    .ToList()
+                : allTrainings
+                    .OrderBy(t => t.StartTime)
+                    .ToList();
 
             return Page();
         }

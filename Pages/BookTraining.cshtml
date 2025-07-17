@@ -70,7 +70,8 @@
                                                             <button type="submit"
                                                                     name="sessionId"
                                                                     value="@session.Id"
-                                                                    class="btn btn-success btn-sm w-100">
+                                                                    class="btn btn-success btn-sm w-100"
+                                                                    onclick="return confirm('Вы записываетесь на тренировку @session.TrainingName в @session.StartTime.ToString("HH:mm"). Продолжить?')">
                                                                 Записаться
                                                             </button>
                                                         }
