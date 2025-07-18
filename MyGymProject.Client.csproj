@@ -15,4 +15,8 @@
     <ProjectReference Include="..\MyGymProject.Server\MyGymProject.Server.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\uploads\" />
+  </ItemGroup>
+
 </Project>
