@@ -1,36 +1,95 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Главная";
 }
-<div class="container">
-    <h1 class="display-3"> Welcome to MyGym</h1>
-    <div id="carouselExampleControls" class="carousel slide mt-4" data-bs-ride="carousel">
+<div class="container my-5" style="cursor:default">
+    <h1 class="display-3 text-center text-primary mb-5">Добро пожаловать в MyGym Cats Club 🐾</h1>
+
+    <!-- Карусель -->
+    <div id="carouselExampleCaptions" class="carousel slide mb-5 shadow rounded" data-bs-ride="carousel">
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="/source/1.jpg" class="d-block w-100" alt="Загрузка">
+                <img src="/source/1.jpg" class="d-block w-100 rounded" alt="...">
+                <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-3">
+                    <h5>Кот-фитнес инструктор</h5>
+                    <p>Следит за техникой лучше любого человека!</p>
+                </div>
             </div>
             <div class="carousel-item">
-                <img src="/source/2.jpg" class="d-block w-100" alt="...">
+                <img src="/source/2.jpg" class="d-block w-100 rounded" alt="...">
+                <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-3">
+                    <h5>Йога с котами</h5>
+                    <p>Найди дзен с мурлыками.</p>
+                </div>
             </div>
             <div class="carousel-item">
-                <img src="/source/3.jpg" class="d-block w-100" alt="...">
-            </div>
-            <div class="carousel-item">
-                <img src="/source/4.jpg" class="d-block w-100" alt="...">
-            </div>
-            <div class="carousel-item">
-                <img src="/source/5.png" class="d-block w-100" alt="...">
+                <img src="/source/3.jpg" class="d-block w-100 rounded" alt="...">
+                <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-3">
+                    <h5>Групповые занятия</h5>
+                    <p>Упражнения в компании пушистых наставников.</p>
+                </div>
             </div>
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
         </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
         </button>
     </div>
-</div>
 
+    <!-- О нас -->
+    <div class="container info-section">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h2 class="section-title">О нас 🐾</h2>
+                <p class="text-muted-custom">
+                    Мы — первый в мире фитнес-клуб, где тренерами работают коты! 🐱
+                    Каждый тренер прошёл мур-лицензирование и готов сделать вас лучше: мягче, гибче и энергичнее!
+                </p>
+            </div>
+            <div class="col-md-6 text-center">
+                <img src="/source/4.jpg" class="img-fluid rounded shadow" alt="О нас">
+            </div>
+        </div>
+    </div>
+
+    <!-- Направления -->
+    <div class="container info-section">
+        <h2 class="section-title text-center">Наши направления 🏋️‍♂️</h2>
+        <div class="row text-center">
+            <div class="col-md-3 mb-4">
+                <div class="direction-card">
+                    <h5>Фитнес</h5>
+                    <p>Интенсивные тренировки с котами-энтузиастами 🐾</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="direction-card">
+                    <h5>Йога</h5>
+                    <p>Гибкость, спокойствие и мур-медитация 🧘‍♀️</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="direction-card">
+                    <h5>Атлетика</h5>
+                    <p>Сила и выносливость с котом-качком 💪</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="direction-card">
+                    <h5>Пилатес</h5>
+                    <p>Растяжка и лёгкость — мур-р-рай 🐈</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA блок -->
+    <div class="info-section rounded text-center">
+        <h2 class="text-success mb-3">Готовы начать?</h2>
+        <p class="mb-4">Запишитесь к нашему тренеру-коту и почувствуйте настоящий мур-фитнес!</p>
+        <a href="/TrainerBooking" class="btn btn-lg btn-success">Записаться сейчас</a>
+    </div>
+</div>

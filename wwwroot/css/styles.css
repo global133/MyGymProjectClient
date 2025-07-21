@@ -65,10 +65,61 @@ body {
     background-color: white;
 }
 
-    .table th {
-        border-bottom: 1px solid #dee2e6;
-    }
+.table th {
+    border-bottom: 1px solid #dee2e6;
+}
 
-    .table tr:not(:last-child) {
-        border-bottom: 1px solid #f0f0f0;
+.table tr:not(:last-child) {
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.info-section {
+    cursor: default;
+    background-color: #f8f9fa;
+    padding: 60px 30px;
+    border-radius: 20px;
+    margin-bottom: 40px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.info-section:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.direction-card {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%;
+}
+
+.direction-card:hover {
+    cursor: auto;
+    transform: translateY(-10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.section-title {
+    font-size: 2.2rem;
+    font-weight: bold;
+    color: #3a3a3a;
+    margin-bottom: 1.5rem;
+}
+
+.text-muted-custom {
+    color: #6c757d;
+    font-size: 1.1rem;
+}
+
+.navbar-nav .nav-link {
+    color: white; /* обычный цвет */
+    transition: color 0.3s ease, font-weight 0.3s ease, text-decoration 0.3s ease;
+}
+
+    .navbar-nav .nav-link:hover {
+        color: #f28e13 !important;
+        text-decoration: underline; /* подчеркивание */
     }
