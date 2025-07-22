@@ -6,68 +6,151 @@
 
 <div class="container-fluid p-0">
     <div class="row">
-        <partial name="_ClientSidebar.cshtml"/>
-        <div class="col-10 p-4">
-            <div class="col-8 mb-3 text-start">
-                <h1 class="display-6">Добро пожаловать, @Model.client?.FullName</h1>
-            </div>
-            <div class="row mt-5">
-                <div class="col-2">
-                    <img src="./source/user.png" alt="No img" class="img-fluid" style="max-width: 20vh;" />
+        <partial name="_ClientSidebar.cshtml" />
+        <div class="col-10 p-4 bg-light min-vh-100">
+            <div class="row mb-4">
+                <div class="col-md-2">
+                    <img src="~/source/user.png" alt="Фото профиля" class="img-thumbnail rounded-circle shadow" style="max-width: 120px;" />
                 </div>
-                <div class="col-4 ms-5">
-                    <h5> Личные данные</h5>
-                    @if(Model.IsEditing)
-                    {
-                        <form method="post">
-                            <div class="mb-2">
-                                <label>Имя</label>
-                                <input asp-for="updatedClient.FullName" class="form-control" />
-                            </div>
-                            <div class="mb-2">
-                                <label>Дата рождения</label>
-                                <input asp-for="updatedClient.DateOfBirth" type="date" class="form-control" />
-                            </div>
-                            <div class="mb-2">
-                                <label>Логин</label>
-                                <input asp-for="updatedClient.Login" class="form-control" />
-                            </div>
-                            <label asp-for="updatedClient.Gender" class="form-label">Укажите пол</label>
-                            <select asp-for="updatedClient.Gender" class="form-select form-select-sm" aria-label=".form-select-sm example">
-                                <option value="">Выберите пол</option>
-                                <option value="1">Мужской</option>
-                                <option value="2">Женский</option>
-                            </select>
-                            <div class="mb-2">
-                                <label>Email</label>
-                                <input asp-for="updatedClient.Email" class="form-control" />
-                            </div>
-                            <div class="mb-2">
-                                <label>Телефон</label>
-                                <input asp-for="updatedClient.Phone" class="form-control" />
-                            </div>
-                            <button type="submit" class="btn btn-success me-2">Сохранить</button>
-                            <a asp-page="/ClientMain" class="btn btn-secondary">Отмена</a>
+                <div class="col-md-10 d-flex flex-column justify-content-center">
+                    <h2 class="fw-bold">Добро пожаловать, @Model.client?.FullName!</h2>
+                    <p class="text-muted">Мы рады видеть вас снова в нашем клубе 🐾</p>
+                </div>
+            </div>
 
-                        </form>
-                    }
-                    else
-                    {
-                        <p>Id: @Model.client.Id</p>
-                        <p>Имя: @Model.client.FullName</p>
-                        <p>Дата рождения: @Model.client.DateOfBirth</p>
-                        <p>Логин: @Model.client.Login</p>
-                        <p>Email: @Model.client.Email</p>
-                        <p>Телефон: @Model.client.Phone</p>
-                        <a asp-page="/ClientMain" asp-route-IsEditing="true" class="btn btn-primary">Редактировать</a>
-                        @if (!string.IsNullOrEmpty(Model.Message))
-                        {
-                            <div class="alert alert-success mt-3">@Model.Message</div>
-                        }
-                    }  
+            <div class="row mb-5">
+                <div class="col-md-6">
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-body hover-shadow">
+                            <h5 class="card-title mb-3">Личные данные</h5>
+                            @if (Model.IsEditing)
+                            {
+                                <form method="post">
+                                    <div class="mb-2">
+                                        <label>Имя</label>
+                                        <input asp-for="updatedClient.FullName" class="form-control" value="@Model.client.FullName"/>
+                                        <span asp-validation-for="updatedClient.FullName" class="text-danger"></span>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label>Дата рождения</label>
+                                        <input asp-for="updatedClient.DateOfBirth" type="date" class="form-control" value="@Model.client.DateOfBirth.ToString("yyyy-MM-dd")" />
+                                        <span asp-validation-for="updatedClient.DateOfBirth" class="text-danger"></span>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label>Логин</label>
+                                        <input asp-for="updatedClient.Login" class="form-control" value="@Model.client.Login"/>
+                                        <span asp-validation-for="updatedClient.Login" class="text-danger"></span>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label>Email</label>
+                                        <input asp-for="updatedClient.Email" class="form-control" value="@Model.client.Email"/>
+                                        <span asp-validation-for="updatedClient.Email" class="text-danger"></span>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label>Телефон</label>
+                                        <input asp-for="updatedClient.Phone" class="form-control" value="@Model.client.Phone"/>
+                                        <span asp-validation-for="updatedClient.Phone" class="text-danger"></span>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label asp-for="updatedClient.Gender" class="form-label">Пол</label>
+                                        <select asp-for="updatedClient.Gender" class="form-select">
+                                            <option value="">Выберите пол</option>
+                                            <option value="Мужской">Мужской</option>
+                                            <option value="Женский">Женский</option>
+                                        </select>
+                                        <span asp-validation-for="updatedClient.Gender" class="text-danger"></span>
+                                    </div>
+                                    <button type="submit" class="btn btn-success me-2">Сохранить</button>
+                                    <a asp-page="/ClientMain" class="btn btn-secondary">Отмена</a>
+                                </form>
+                            }
+                            else
+                            {
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">Имя: @Model.client.FullName</li>
+                                    <li class="list-group-item">Дата рождения: @Model.client.DateOfBirth.ToShortDateString()</li>
+                                    <li class="list-group-item">Логин: @Model.client.Login</li>
+                                    <li class="list-group-item">Email: @Model.client.Email</li>
+                                    <li class="list-group-item">Телефон: @Model.client.Phone</li>
+                                    <li class="list-group-item">Пол: @Model.client.Gender</li>
+                                </ul>
+                                <a asp-page="/ClientMain" asp-route-IsEditing="true" class="btn btn-primary mt-3">Редактировать</a>
+                            }
+
+                            @if (!string.IsNullOrEmpty(Model.Message))
+                            {
+                                <div id="successMsg" class="alert alert-success mt-3">@Model.Message</div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="hover-shadow card text-white bg-success h-100">
+                                <div class="card-body">
+                                    <h6 class="card-title">Записей на тренировки</h6>
+                                    <h3>5</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="hover-shadow card text-white bg-info h-100">
+                                <div class="card-body">
+                                    <h6 class="card-title">Активность</h6>
+                                    <h3>73%</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hover-shadow col-12">
+                            <div class="hover-shadow card shadow-sm">
+                                <div class="card-body">
+                                    <h6 class="card-title">Последняя тренировка</h6>
+                                    <p class="mb-0"><strong>14 июля, 2025</strong> — Йога с тренером Котей</p>
+                                    <a asp-page="/ClientSchedule" class="btn btn-outline-primary btn-sm mt-2">Перейти к расписанию</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+
+            <div class="card hover-shadow">
+                <div class="card-body">
+                    <h5 class="mb-3">Наши направления</h5>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <div class="p-3 bg-light border rounded hover-shadow">
+                                <h6>Йога 🧘‍♂️</h6>
+                                <p class="text-muted small">Гибкость, дыхание, внутреннее спокойствие.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3 bg-light border rounded hover-shadow">
+                                <h6>Силовые тренировки 💪</h6>
+                                <p class="text-muted small">Работа с мышцами, энергия, прогресс.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3 bg-light border rounded hover-shadow">
+                                <h6>Кардио 🏃‍♀️</h6>
+                                <p class="text-muted small">Выносливость, здоровье сердца, сброс веса.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
 
+@section Scripts {
+    <script>
+        setTimeout(() => {
+            const msg = document.getElementById("successMsg");
+            if (msg) msg.style.display = "none";
+        }, 3000); 
+    </script>
+}

@@ -123,3 +123,11 @@ body {
         color: #f28e13 !important;
         text-decoration: underline; /* подчеркивание */
     }
+
+.hover-shadow {
+    transition: all 0.3s ease;
+}
+
+.hover-shadow:hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
