@@ -79,7 +79,7 @@
 
                             @if (!string.IsNullOrEmpty(Model.Message))
                             {
-                                <div id="successMsg" class="alert alert-success mt-3">@Model.Message</div>
+                                <div id="" class="alert alert-success mt-3">@Model.Message</div>
                             }
                         </div>
                     </div>
@@ -91,7 +91,7 @@
                             <div class="hover-shadow card text-white bg-success h-100">
                                 <div class="card-body">
                                     <h6 class="card-title">Записей на тренировки</h6>
-                                    <h3>5</h3>
+                                    <h3>@Model.trainingSessions.Count</h3>
                                 </div>
                             </div>
                         </div>
