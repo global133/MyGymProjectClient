@@ -79,8 +79,9 @@
 
                             @if (!string.IsNullOrEmpty(Model.Message))
                             {
-                                <div id="" class="alert alert-success mt-3">@Model.Message</div>
+                                <div id="successMsg" class="alert alert-success mt-3">@Model.Message</div>
                             }
+                            
                         </div>
                     </div>
                 </div>
@@ -141,16 +142,12 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
 
 @section Scripts {
     <script>
-        setTimeout(() => {
-            const msg = document.getElementById("successMsg");
-            if (msg) msg.style.display = "none";
-        }, 3000); 
+        ReloadPage("successMsg");
     </script>
 }
