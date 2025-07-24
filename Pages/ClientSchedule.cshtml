@@ -8,18 +8,18 @@
     <div class="row">
         <partial name="_ClientSidebar.cshtml" />
         <div class="col-10 p-4">
-            <h1 class="display-3 mt-4 mb-4">Мои тренировки</h1>
+            <h1 class="mb-4 display-5 fw-bold">Мои тренировки</h1>
      
-            <div class="mb-4">
-                <p>На этой странице отображается ваше актуальное расписание тренировок. Следите за своими занятиями, планируйте нагрузки и не пропускайте важные тренировки.</p>
-            </div>
-            <form method="get" class="row g-3 mb-4">
-                <div class="col-auto">
-                    <label for="selectedDate" class="form-label">Фильтр по дате:</label>
+            <p class="lead mb-4">
+                Здесь вы можете просматривать ваше актуальное расписание тренировок. Следите за занятиями и не пропускайте важные сессии.
+            </p>
+            <form method="get" class="row gy-2 gx-3 align-items-end mb-4">
+                <div class="col-md-4">
+                    <label for="selectedDate" class="form-label">Фильтр по дате</label>
                     <input type="date" id="selectedDate" name="SelectedDate" class="form-control"
                            value="@Model.SelectedDate?.ToString("yyyy-MM-dd")" />
                 </div>
-                <div class="col-auto align-self-end">
+                <div class="col-auto">
                     <button type="submit" class="btn btn-primary">Показать</button>
                     <a href="/ClientSchedule" class="btn btn-outline-secondary">Сбросить</a>
                 </div>
@@ -27,41 +27,36 @@
 
             @if (Model.Trainings.Any())
             {
-                <table class="table table-bordered table-striped">
-                    <thead class="table-dark">
-                        <tr>
-                            <th>Тренировка</th>
-                            <th>Дата</th>
-                            <th>Время</th>
-                            <th>Тренер</th>
-                            <th>Зал</th>
-                            <th>Действие</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var training in Model.Trainings)
-                        {
-                            <tr>
-                                <td>@training.TrainingName</td>
-                                <td>@training.StartTime.ToString("dd.MM.yyyy")</td>
-                                <td>@training.EndTime.ToString("HH:mm")</td>
-                                <td>@training.TrainerName</td>
-                                <td>@training.HallName</td>
-                                <td>
-                                    <form method="post" asp-page-handler="Delete" class="d-inline">
+                <div class="row row-cols-1 row-cols-md-2 g-4">
+                    @foreach (var training in Model.Trainings)
+                    {
+                        <div class="col">
+                            <div class="card shadow-sm h-100 border-start border-4 border-primary">
+                                <div class="card-body">
+                                    <h5 class="card-title fw-bold text-primary">@training.TrainingName</h5>
+
+                                    <ul class="list-unstyled mb-3">
+                                        <li><strong>Дата:</strong> @training.StartTime.ToString("dd.MM.yyyy")</li>
+                                        <li><strong>Время:</strong> @training.StartTime.ToString("HH:mm") — @training.EndTime.ToString("HH:mm")</li>
+                                        <li><strong>Тренер:</strong> @training.TrainerName</li>
+                                        <li><strong>Зал:</strong> @training.HallName</li>
+                                    </ul>
+
+                                    <form method="post" asp-page-handler="Delete">
                                         <input type="hidden" name="sessionId" value="@training.Id" />
-                                        <button type="submit" class="btn btn-link p-0 text-danger" title="Отменить запись" style="border: none;">
-                                            <i class="fas fa-trash"></i>
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">
+                                            <i class="fas fa-trash-alt me-1"></i> Отменить запись
                                         </button>
                                     </form>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
             }
             else
             {
-                <div class="alert alert-info">
+                <div class="alert alert-info mt-4">
                     Нет тренировок для отображения.
                 </div>
             }
