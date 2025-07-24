@@ -34,14 +34,6 @@
     max-width: 500px;
 }
 
-html, body {
-    height: 100%;
-}
-
-body {
-    display: flex;
-    flex-direction: column;
-}
 
 .content-wrapper {
     flex: 1 0 auto;

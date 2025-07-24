@@ -13,14 +13,21 @@ html {
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
+    height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
-  background-image: url(/source/back.jpg)
- 
+    margin-bottom: 60px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-image: url(/source/back.jpg);
+    background-size: cover; 
+    background-repeat: no-repeat; 
+    background-position: center center; 
+    background-attachment: fixed;
 }
 
 .carousel-item {
