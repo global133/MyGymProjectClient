@@ -40,12 +40,7 @@ namespace MyGymProject.Client.Pages
 
         public async Task<IActionResult> OnGetAsync()
         {
-            if (!_cache.TryGetValue($"trainer_{TrainerId}", out TrainerReadDto trainer))
-            {
-                trainer = await _httpClient.GetFromJsonAsync<TrainerReadDto>($"http://localhost:5155/api/Trainers/{TrainerId}");
-                _cache.Set($"trainer_{TrainerId}", trainer, TimeSpan.FromMinutes(10));
-            }
-            Trainer = trainer;
+            Trainer = await _httpClient.GetFromJsonAsync<TrainerReadDto>($"http://localhost:5155/api/Trainers/{TrainerId}");
 
             var currentDate = DateTime.Today;
             StartOfWeek = currentDate.AddDays(-(int)currentDate.DayOfWeek + (int)DayOfWeek.Monday)
