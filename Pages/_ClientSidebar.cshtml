@@ -1,25 +1,29 @@
-﻿<div class="col-2 bg-dark p-3 sidebar">
-    <h5 class="text-white mb-4">Меню</h5>
-    <ul class="nav navbar-nav flex-column">
+﻿@{
+    var currentPage = ViewContext.RouteData.Values["page"]?.ToString();
+}
+
+<div class="col-2 sidebar bg-secondary text-white p-3">
+    <h5 class="text-uppercase mb-4">Меню</h5>
+    <ul class="nav flex-column">
         <li class="nav-item mb-2">
-            <a class="nav-link text-light" asp-page="/ClientMain">
-                <i class="fas fa-user-circle me-2"></i>Личный кабинет
+            <a class="nav-link text-white @(currentPage == "/ClientMain" ? "active" : "")" asp-page="/ClientMain">
+                <i class="fas fa-user-circle me-2"></i> Личный кабинет
             </a>
         </li>
         <li class="nav-item mb-2">
-            <a class="nav-link text-light" asp-page="/ClientSchedule">
-                <i class="fas fa-calendar-alt me-2"></i>Мои тренировки
+            <a class="nav-link text-white @(currentPage == "/ClientSchedule" ? "active" : "")" asp-page="/ClientSchedule">
+                <i class="fas fa-calendar-alt me-2"></i> Мои тренировки
             </a>
         </li>
         <li class="nav-item mb-2">
-            <a class="nav-link text-light" asp-page="/TrainerBooking">
-                <i class="fas fa-clock me-2"></i>Записаться к тренеру
+            <a class="nav-link text-white @(currentPage == "/TrainerBooking" ? "active" : "")" asp-page="/TrainerBooking">
+                <i class="fas fa-clock me-2"></i> Записаться к тренеру
             </a>
         </li>
         <li class="nav-item mt-4">
             <form method="post" asp-page="/Logout">
                 <button type="submit" class="nav-link text-danger btn btn-link p-0">
-                    <i class="fas fa-sign-out-alt me-2"></i>Выход
+                    <i class="fas fa-sign-out-alt me-2"></i> Выход
                 </button>
             </form>
         </li>

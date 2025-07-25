@@ -40,4 +40,8 @@ body {
     width: 100%;
 }
 
-
+.nav-link.active {
+    font-weight: bold;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
