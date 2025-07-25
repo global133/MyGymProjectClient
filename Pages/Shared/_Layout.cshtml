@@ -2,7 +2,6 @@
     var showSidebar = ViewData["ShowSidebar"] as bool? ?? false;
     var path = Context.Request.Path.Value?.ToLower();
     var hideFooter = path.Contains("/loginpage") || path.Contains("registration");
-    Console.WriteLine(hideFooter);
 }
 
 <!DOCTYPE html>

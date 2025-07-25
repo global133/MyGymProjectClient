@@ -10,6 +10,8 @@ namespace MyGymProject.Client.Pages
 {
     public class BookTrainingModel : AuthorizedPageModel
     {
+        [TempData]
+        public string Messege {  get; set; }
 
         [BindProperty(SupportsGet = true)]
         public int TrainerId { get; set; }
@@ -72,11 +74,11 @@ namespace MyGymProject.Client.Pages
 
             if (!response.IsSuccessStatusCode)
             {
-                TempData["Error"] = "Ќе удалось записатьс€ на тренировку. ¬озможно вы уже записаны на эту тренировку";
-                return RedirectToPage("/ClientSchedule");
+                Messege = "Ќе удалось записатьс€ на тренировку. ¬озможно вы уже записаны на эту тренировку";
+                return RedirectToPage("/BookTraining", new {TrainerId = TrainerId});
             }
 
-            TempData["Success"] = "¬ы успешно записались на тренировку!";
+            TempData["Messege"] = "¬ы успешно записались на тренировку!";
             return RedirectToPage("/ClientSchedule");
         }
     }

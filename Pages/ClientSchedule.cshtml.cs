@@ -8,6 +8,9 @@ namespace MyGymProject.Client.Pages
 {
     public class ClientScheduleModel : AuthorizedPageModel
     {
+        [TempData]
+        public string Messege {  get; set; }
+
         [BindProperty(SupportsGet = true)]
         public DateTime? SelectedDate { get; set; }
 

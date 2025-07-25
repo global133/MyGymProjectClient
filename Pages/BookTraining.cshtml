@@ -11,6 +11,19 @@
 
         <!-- Основной контент -->
         <div class="col-md-10 col-lg-10 p-4">
+            @if(!string.IsNullOrEmpty(Model.Messege))
+            {
+                <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1100">
+                    <div class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="d-flex">
+                            <div class="toast-body">
+                                @Model.Messege
+                            </div>
+                            <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                    </div>
+                </div>
+            }
             @if (!Model.UpcomingSessions.Any())
             {
                 <div>
@@ -94,3 +107,14 @@
     </div>
 </div>
 
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            var toastEl = document.querySelector('.toast');
+            if (toastEl) {
+                var toast = new bootstrap.Toast(toastEl);
+                toast.show();
+            }
+        });
+    </script>
+}
