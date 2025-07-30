@@ -11,6 +11,9 @@ namespace MyGymProject.Client.Pages
     {
         private readonly HttpClient _httpClient;
 
+        private readonly IConfiguration _configuration;
+        private readonly string _apiBaseUrl;
+
         [BindProperty]
         [Required(ErrorMessage = "Ведите логин")]
         [Display(Name = "Имя")]
@@ -41,9 +44,11 @@ namespace MyGymProject.Client.Pages
 
         public string ErrorMessage { get; set; }
 
-        public RegistrationModel(HttpClient httpClient)
+        public RegistrationModel(HttpClient httpClient, IConfiguration configuration)
         {
             this._httpClient = httpClient;
+            this._configuration = configuration;
+            this._apiBaseUrl = configuration["ApiBaseUrl"];
         }
         public void OnGet()
         {
@@ -73,7 +78,7 @@ namespace MyGymProject.Client.Pages
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState);
 
-                var response = await _httpClient.PostAsJsonAsync("http://localhost:5155/api/Auth/register", clientCreateDto);
+                var response = await _httpClient.PostAsJsonAsync($"{_apiBaseUrl}/Auth/register", clientCreateDto);
 
                 if (response.IsSuccessStatusCode)
                 {

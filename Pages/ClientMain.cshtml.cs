@@ -23,12 +23,16 @@ namespace MyGymProject.Client.Pages
 
         [TempData]
         public string? Message { get; set; }
-
+   
+        private readonly string _apiBaseUrl;
         public ClientMainModel(
             IHttpClientFactory httpClientFactory,
-            IHttpContextAccessor contextAccessor)
-            :base(httpClientFactory, contextAccessor)
-        { }
+            IHttpContextAccessor contextAccessor,
+            IConfiguration configuration)
+            :base(httpClientFactory, contextAccessor, configuration)
+        {
+            _apiBaseUrl = configuration["ApiBaseUrl"];
+        }
 
 
         public async Task<IActionResult> OnGetAsync()
@@ -39,7 +43,7 @@ namespace MyGymProject.Client.Pages
 
             client = clientData;
 
-            var response = await _httpClient.GetAsync($"http://localhost:5155/api/Clients/schedule{client.Id}");
+            var response = await _httpClient.GetAsync($"{_apiBaseUrl}/Clients/schedule{client.Id}");
 
             if (!response.IsSuccessStatusCode)
             {
@@ -56,7 +60,7 @@ namespace MyGymProject.Client.Pages
             var clientData = await LoadClientAsync();
             client = clientData;
 
-            var response = await _httpClient.PutAsJsonAsync($"http://localhost:5155/api/Clients/{client.Id}", updatedClient);
+            var response = await _httpClient.PutAsJsonAsync($"{_apiBaseUrl}/Clients/{client.Id}", updatedClient);
 
             if (!response.IsSuccessStatusCode)
             {

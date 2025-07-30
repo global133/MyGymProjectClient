@@ -16,7 +16,13 @@ namespace MyGymProject.Client.Pages
 
         [BindProperty]
         public List<TrainingSessionReadDto> Trainings { get; set; }
-        public ClientScheduleModel(IHttpClientFactory httpClientFactory, IHttpContextAccessor contextAccessor) : base(httpClientFactory, contextAccessor) { }
+
+        private readonly string _apiBaseUrl;
+        public ClientScheduleModel(IHttpClientFactory httpClientFactory, IHttpContextAccessor contextAccessor, IConfiguration configuration) : 
+            base(httpClientFactory, contextAccessor, configuration) 
+        {
+            _apiBaseUrl = configuration["ApiBaseUrl"];
+        }
         public async Task<IActionResult> OnGetAsync()
         {
             var clientData = await LoadClientAsync();
@@ -29,7 +35,7 @@ namespace MyGymProject.Client.Pages
                 return RedirectToPage("/LoginPage");
 
 
-            var response = await _httpClient.GetAsync($"http://localhost:5155/api/Clients/schedule{clientData.Id}");
+            var response = await _httpClient.GetAsync($"{_apiBaseUrl}/Clients/schedule{clientData.Id}");
             if (!response.IsSuccessStatusCode)
             {
                 throw new HttpRequestException($"Ошибка: {response.StatusCode}");
@@ -51,7 +57,7 @@ namespace MyGymProject.Client.Pages
         public async Task<IActionResult> OnPostDeleteAsync(int sessionId)
         {
             var client = await LoadClientAsync(); 
-            var response = await _httpClient.DeleteAsync($"http://localhost:5155/api/trainings/{sessionId}/clients/{client.Id}");
+            var response = await _httpClient.DeleteAsync($"{_apiBaseUrl}/trainings/{sessionId}/clients/{client.Id}");
 
             if (!response.IsSuccessStatusCode)
             {

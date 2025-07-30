@@ -13,8 +13,10 @@ namespace MyGymProject.Client.Pages
         [TempData]
         public string Messege {  get; set; }
 
+
         [BindProperty(SupportsGet = true)]
         public int TrainerId { get; set; }
+
 
         [BindProperty(SupportsGet = true)]
         public TrainerReadDto Trainer { get; set; }
@@ -23,24 +25,23 @@ namespace MyGymProject.Client.Pages
         [BindProperty(SupportsGet = true)]
         public int WeekOffset { get; set; } = 0;
 
+        private readonly string _apiBaseUrl;
         public List<DateTime> DaysOfWeek { get; set; } = new();
         public List<TrainingSessionReadDto> UpcomingSessions { get; set; } = new();
         public DateTime StartOfWeek { get; private set; }
         public DateTime EndOfWeek { get; private set; }
 
-        private readonly IMemoryCache _cache;
-
         public BookTrainingModel(
             IHttpClientFactory httpClientFactory,
             IHttpContextAccessor contextAccessor,
-            IMemoryCache memoryCache) : base(httpClientFactory, contextAccessor)
+            IConfiguration configuration) : base(httpClientFactory, contextAccessor, configuration)
         {
-            _cache = memoryCache;
+            _apiBaseUrl = configuration["ApiBaseUrl"];
         }
 
         public async Task<IActionResult> OnGetAsync()
         {
-            Trainer = await _httpClient.GetFromJsonAsync<TrainerReadDto>($"http://localhost:5155/api/Trainers/{TrainerId}");
+            Trainer = await _httpClient.GetFromJsonAsync<TrainerReadDto>($"{_apiBaseUrl}/Trainers/{TrainerId}");
 
             var currentDate = DateTime.Today;
             StartOfWeek = currentDate.AddDays(-(int)currentDate.DayOfWeek + (int)DayOfWeek.Monday)
@@ -51,7 +52,7 @@ namespace MyGymProject.Client.Pages
                 .Select(i => StartOfWeek.AddDays(i))
                 .ToList();
 
-            UpcomingSessions = await _httpClient.GetFromJsonAsync<List<TrainingSessionReadDto>>($"http://localhost:5155/api/trainings/bytrainer/{Trainer.Id}");
+            UpcomingSessions = await _httpClient.GetFromJsonAsync<List<TrainingSessionReadDto>>($"{_apiBaseUrl}/trainings/bytrainer/{Trainer.Id}");
 
             // Фильтрация по текущей неделе
             UpcomingSessions = UpcomingSessions?
@@ -65,7 +66,7 @@ namespace MyGymProject.Client.Pages
         public async Task<IActionResult> OnPostAsync(int sessionId)
         {
             var client = await LoadClientAsync();
-            var response = await _httpClient.PostAsync($"http://localhost:5155/api/trainings/{sessionId}/clients/{client.Id}", null);
+            var response = await _httpClient.PostAsync($"{_apiBaseUrl}/trainings/{sessionId}/clients/{client.Id}", null);
 
             if (!response.IsSuccessStatusCode)
             {

@@ -9,10 +9,16 @@ namespace MyGymProject.Client
 {
     public class AuthorizedPageModel : PageModel
     {
+        private readonly IConfiguration _configuration;
+        private readonly string _apiBaseUrl;
+
         protected readonly HttpClient _httpClient;
 
-        public AuthorizedPageModel(IHttpClientFactory httpClientFactory, IHttpContextAccessor contextAccessor)
+        public AuthorizedPageModel(IHttpClientFactory httpClientFactory, IHttpContextAccessor contextAccessor, IConfiguration configuration)
         {
+            _configuration = configuration;
+            _apiBaseUrl = _configuration["ApiBaseUrl"];
+
             _httpClient = httpClientFactory.CreateClient();
 
             var token = contextAccessor.HttpContext?.Request.Cookies["jwt"];
@@ -33,7 +39,7 @@ namespace MyGymProject.Client
 
             var id = GetClientIdFromToken(token);
 
-            var response = await _httpClient.GetAsync($"http://localhost:5155/api/Clients/{id}");
+            var response = await _httpClient.GetAsync($"{_apiBaseUrl}/Clients/{id}");
             if (!response.IsSuccessStatusCode) return null;
 
             return await response.Content.ReadFromJsonAsync<ClientReadDto>();

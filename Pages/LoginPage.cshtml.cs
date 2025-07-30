@@ -18,7 +18,13 @@ namespace MyGymProject.Client.Pages
         public string Password { get; set; }
         public string ErrorMessage { get; set; }
 
-        public LoginPageModel(IHttpClientFactory httpClientFactory, IHttpContextAccessor contextAccessor) : base(httpClientFactory, contextAccessor) { }
+        private readonly string _apiBaseUrl;
+
+        public LoginPageModel(IHttpClientFactory httpClientFactory, IHttpContextAccessor contextAccessor, IConfiguration configuration) : 
+            base(httpClientFactory, contextAccessor, configuration) 
+        {
+            _apiBaseUrl = configuration["ApiBaseUrl"];
+        }
       
         public async Task<IActionResult> OnGetAsync()
         {
@@ -37,7 +43,7 @@ namespace MyGymProject.Client.Pages
             var data = new { Login = this.Login, Password = this.Password };
             try
             {
-                var response = await this._httpClient.PostAsJsonAsync("http://localhost:5155/api/Auth/login", data);
+                var response = await this._httpClient.PostAsJsonAsync($"{_apiBaseUrl}/Auth/login", data);
 
                 if (response.IsSuccessStatusCode)
                 {
