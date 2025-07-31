@@ -10,8 +10,8 @@ namespace MyGymProject.Client
     public class AuthorizedPageModel : PageModel
     {
         private readonly IConfiguration _configuration;
-        private readonly string _apiBaseUrl;
 
+        protected readonly string _apiBaseUrl;
         protected readonly HttpClient _httpClient;
 
         public AuthorizedPageModel(IHttpClientFactory httpClientFactory, IHttpContextAccessor contextAccessor, IConfiguration configuration)

@@ -24,8 +24,6 @@ namespace MyGymProject.Client.Pages
 
         [BindProperty(SupportsGet = true)]
         public int WeekOffset { get; set; } = 0;
-
-        private readonly string _apiBaseUrl;
         public List<DateTime> DaysOfWeek { get; set; } = new();
         public List<TrainingSessionReadDto> UpcomingSessions { get; set; } = new();
         public DateTime StartOfWeek { get; private set; }
@@ -35,9 +33,7 @@ namespace MyGymProject.Client.Pages
             IHttpClientFactory httpClientFactory,
             IHttpContextAccessor contextAccessor,
             IConfiguration configuration) : base(httpClientFactory, contextAccessor, configuration)
-        {
-            _apiBaseUrl = configuration["ApiBaseUrl"];
-        }
+        {}
 
         public async Task<IActionResult> OnGetAsync()
         {

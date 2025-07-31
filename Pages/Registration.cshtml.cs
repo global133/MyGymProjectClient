@@ -48,7 +48,7 @@ namespace MyGymProject.Client.Pages
         {
             this._httpClient = httpClient;
             this._configuration = configuration;
-            this._apiBaseUrl = configuration["ApiBaseUrl"];
+            this._apiBaseUrl = _configuration["ApiBaseUrl"];
         }
         public void OnGet()
         {

@@ -24,15 +24,12 @@ namespace MyGymProject.Client.Pages
         [TempData]
         public string? Message { get; set; }
    
-        private readonly string _apiBaseUrl;
         public ClientMainModel(
             IHttpClientFactory httpClientFactory,
             IHttpContextAccessor contextAccessor,
             IConfiguration configuration)
             :base(httpClientFactory, contextAccessor, configuration)
-        {
-            _apiBaseUrl = configuration["ApiBaseUrl"];
-        }
+        { }
 
 
         public async Task<IActionResult> OnGetAsync()

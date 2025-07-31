@@ -18,13 +18,9 @@ namespace MyGymProject.Client.Pages
         public string Password { get; set; }
         public string ErrorMessage { get; set; }
 
-        private readonly string _apiBaseUrl;
-
         public LoginPageModel(IHttpClientFactory httpClientFactory, IHttpContextAccessor contextAccessor, IConfiguration configuration) : 
             base(httpClientFactory, contextAccessor, configuration) 
-        {
-            _apiBaseUrl = configuration["ApiBaseUrl"];
-        }
+        { }
       
         public async Task<IActionResult> OnGetAsync()
         {

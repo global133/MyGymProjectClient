@@ -16,13 +16,9 @@ namespace MyGymProject.Client.Pages
 
         [BindProperty]
         public List<TrainingSessionReadDto> Trainings { get; set; }
-
-        private readonly string _apiBaseUrl;
         public ClientScheduleModel(IHttpClientFactory httpClientFactory, IHttpContextAccessor contextAccessor, IConfiguration configuration) : 
             base(httpClientFactory, contextAccessor, configuration) 
-        {
-            _apiBaseUrl = configuration["ApiBaseUrl"];
-        }
+        {}
         public async Task<IActionResult> OnGetAsync()
         {
             var clientData = await LoadClientAsync();

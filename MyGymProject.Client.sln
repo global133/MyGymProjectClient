@@ -5,7 +5,7 @@ VisualStudioVersion = 17.13.35825.156
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyGymProject.Client", "MyGymProject.Client.csproj", "{6ACD7942-28E0-47B5-81A7-8C7A5A956FF6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyGymProjectServer", "..\MyGymProjectServer\MyGymProject.Server.csproj", "{FE4D4F0A-5E1B-B2C7-BF7B-D8F3E5C66596}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyGymProject.Server", "..\MyGymProjectServer\MyGymProject.Server.csproj", "{FE4D4F0A-5E1B-B2C7-BF7B-D8F3E5C66596}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
