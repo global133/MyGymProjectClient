@@ -23,7 +23,6 @@ if (!app.Environment.IsDevelopment())
 
 builder.Services.AddMemoryCache();
 builder.Services.AddLogging();
-builder.Services.TryAdd(ServiceDescriptor.Singleton<IMemoryCache, MemoryCache>());
 
 
 app.UseHttpsRedirection();
