@@ -10,6 +10,7 @@ namespace MyGymProject.Client
     public class AuthorizedPageModel : PageModel
     {
         private readonly IConfiguration _configuration;
+        private readonly string token;
 
         protected readonly string _apiBaseUrl;
         protected readonly HttpClient _httpClient;
@@ -21,7 +22,7 @@ namespace MyGymProject.Client
 
             _httpClient = httpClientFactory.CreateClient();
 
-            var token = contextAccessor.HttpContext?.Request.Cookies["jwt"];
+            this.token = contextAccessor.HttpContext?.Request.Cookies["jwt"];
             if (!string.IsNullOrEmpty(token))
             {
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
@@ -31,7 +32,7 @@ namespace MyGymProject.Client
 
         protected async Task<ClientReadDto?> LoadClientAsync()
         {
-            var token = Request.Cookies["jwt"];
+            //var token = Request.Cookies["jwt"];
             if (string.IsNullOrEmpty(token)) return null;
 
             var login = GetLoginFromToken(token);
